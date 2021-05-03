@@ -18,6 +18,7 @@ if (Session::getUser()->isAnonymous()) {
     Routes::addRoute('user', 'logout', 'uc/user/controllers/logout.php');
 }
 
+Routes::addRoute('user', 'verify', 'uc/user/controllers/verify.php');
 
 if (Session::getUser()->hasRole([User::USER_ROLE_ANONYMOUS, User::USER_ROLE_BANNED, User::USER_ROLE_NOT_VERIFIED, User::USER_ROLE_UNDEFINED])) {
     Routes::addRoute('user', 'changeRole', 'commons/controllers/accessDenied.php');
@@ -28,6 +29,7 @@ if (Session::getUser()->hasRole([User::USER_ROLE_ANONYMOUS, User::USER_ROLE_BANN
 $currentRole = Session::getCurrentRole();
 if ($currentRole == User::USER_ROLE_ANONYMOUS) {
     $menuUser = new Menu("Connexion", Routes::PathTo('user', 'login'), true, Menu::MENU_MAIN_MENU_RIGHT);
+    $menuUser = new Menu("S'enregistrer", Routes::PathTo('user', 'register'), true, Menu::MENU_MAIN_MENU_RIGHT);
 } else {
     $menuUser = new Menu(Session::getUser()->getFullName(), null, true, Menu::MENU_MAIN_MENU_RIGHT);
     if ($currentRole == User::USER_ROLE_BANNED) {
@@ -37,12 +39,12 @@ if ($currentRole == User::USER_ROLE_ANONYMOUS) {
             if ($r == $currentRole) {
                 $menuUser->AddItem((new Menu($r, null, false))->SetBgColor(Menu::MENU_BG_COLOR_PRIMARY));
             } else {
-                $menuUser->AddItem(new Menu($r, Routes::PathTo('user', 'changeRole')."&role=$r"));
+                $menuUser->AddItem(new Menu($r, Routes::PathTo('user', 'changeRole') . "&role=$r"));
             }
         }
     }
 
     $menuUser->AddDivider();
     $menuUser->AddItem(new Menu('Profil', Routes::PathTo('user', 'profil', false)));
-    $menuUser->AddItem(new Menu('Déconnexion', Routes::PathTo('user', 'logout')));    
+    $menuUser->AddItem(new Menu('Déconnexion', Routes::PathTo('user', 'logout')));
 }

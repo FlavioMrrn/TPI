@@ -5,7 +5,9 @@
 // Normalement un CRUD, mais comme cette classe fait partie du TPI de M. Morrone, il n'y a que le strict
 // minimum pour que cela puisse fonctionner.
 // Auteur: Pascal Comminot
+//      Modifié par: Morrone Flavio
 // Version 0.1.0 PC 20.02.2021 / Codage initial
+// Version 0.1.1 MF 03.05.2021 / Ajout du register, et du hash de password
 
 require_once 'commons/model/DbConnection.php';
 
@@ -22,6 +24,7 @@ class User
     const USER_ROLE_BANNED = 'Banned';
     const USER_ROLE_UNDEFINED = 'Undefined';
 
+    const PASSWORD_SALT = "ylkdfnsdfisdk";
 
     /**
      * @var int
@@ -428,5 +431,68 @@ class User
             return null;
         }
         return self::findByEmail($email);
+    }
+
+    /**
+     * Permet l'enregistrement de l'utilisateur dans la base de données
+     * @param string $name Le nom de l'utilisateur
+     * @param string $email L'email de l'utilisateur
+     * @param string $firstname Le prénom de l'utilisateur
+     * @param string $pwd le mot de passe 
+     * @return void
+     */
+    public static function register(string $name, string $firstname, string $email, string $password, string $address, string $status = 'NotVerified', string $validationDate, string $validationToken) : void
+    {
+        $sql = "INSERT INTO users (firstname, lastname, email, pwdHash, address, status, validationToken, validationDate) VALUES (:firstName, :name, :email, :pwd, :address, :status, :validationToken, :validationDate);";
+        $req = DbConnection::getInstance()->prepare($sql);
+        $req->bindParam(":firstName", $firstname);
+        $req->bindParam(":name", $name);
+        $req->bindParam(":email", $email);
+        $req->bindParam(":address", $address);
+        $req->bindParam(":pwd", $password);
+        $req->bindParam(":status", $status);
+        $req->bindParam(":validationDate", $validationDate);
+        $req->bindParam(":validationToken", $validationToken);
+        $req->execute();
+    }
+
+
+    /**
+     * Permet de saler et de chiffrer le mot de passe en sha256 afin de ne pas pouvoir le défiffrer
+     * @param string $password Le mot de passe à chiffrer
+     * @return string le mot de passe chiffré en sha256
+     */
+    public static function hashPassword(string $password): string
+    {
+        $password .= User::PASSWORD_SALT;
+        $password = hash('sha256', $password);
+        return $password;
+    }
+
+    /**
+     * Compte le nombre d'utilisateurs dans la base de données
+     * @return int le nombre d'utilisateurs de la base
+     */
+    public static function countUsers()
+    {
+        $sql = 'SELECT COUNT(*) FROM users';
+        $req = DbConnection::getInstance()->prepare($sql);
+        $req->execute();
+        return $req->fetch();
+    }
+
+    /**
+     * Génère le token de validation pour un user
+     * @param int nombre de caractères
+     * @return string une chaine aléatoire
+     */
+    public static function generateToken($length = 50) {
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $charactersLength = strlen($characters);
+        $randomString = '';
+        for ($i = 0; $i < $length; $i++) {
+            $randomString .= $characters[rand(0, $charactersLength - 1)];
+        }
+        return $randomString;
     }
 }
