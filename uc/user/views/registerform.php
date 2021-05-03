@@ -3,7 +3,7 @@
 // Script: Vue registerform.php
 // Description: Formulaire d'enregistrement des utilisateurs
 // Auteur: Morrone Flavio
-// Version 1.0.0 MF 03.05.2021
+// Version 0.1.1 MF 03.05.2021
 
 ?>
 

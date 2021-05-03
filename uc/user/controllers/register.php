@@ -1,7 +1,15 @@
 <?php
+// Projet: Application TPI 
+// Script: script register.php
+// Description: script réalisant l'enregistrement d'un user
+// Auteur: Morrone Flavio
+// Version 0.1.1 MF 03.05.2021
+
 require_once 'commons/views/Html.php';
 
+//si une requête d'enregistrement est effecuté
 if (filter_has_var(INPUT_POST, "register")) {
+    //récupération et filtrage des données
     $email = trim(filter_input(INPUT_POST, "email", FILTER_SANITIZE_EMAIL));
     $name = trim(filter_input(INPUT_POST, "name", FILTER_SANITIZE_STRING));
     $firstname = trim(filter_input(INPUT_POST, "firstname", FILTER_SANITIZE_STRING));
@@ -10,8 +18,10 @@ if (filter_has_var(INPUT_POST, "register")) {
     $password = trim(filter_input(INPUT_POST, "confirmpwd", FILTER_SANITIZE_STRING));
 
     if (!empty($email) && !empty($name) && !empty($firstname) && !empty($confirmpassword) && !empty($password) && !empty($address)) {
+        //vérification de l'existance de l'utilisateur
         if (User::findByEmail($email) == null) {
             if ($password == $confirmpassword) {
+
                 $password = User::hashPassword($password);
                 $status = 'NotVerified';
                 $token = user::generateToken();
@@ -19,6 +29,7 @@ if (filter_has_var(INPUT_POST, "register")) {
                 $validationDate->modify('+1 day');
                 if (User::countUsers() == 0) {
                     $status = 'WebManager';
+
                 }
                 try {
                     User::register($name, $firstname, $email, $password, $address, $status, date_format($validationDate, 'Y-m-d H:i:s'), $token);
