@@ -6,7 +6,6 @@ if (!$token) {
     exit();
 }
 
-
 ?>
 
 <form action="<?= Routes::PathTo('user', 'verify') ?>" method="post" class="form-horizontal">
@@ -19,9 +18,9 @@ if (!$token) {
     </div>
     
     <div class="form-group">
-        <label class="control-label col-sm-3" for="name">token: </label>
+        <label class="control-label col-sm-3" for="token">token: </label>
         <div class="col-sm-9">
-            <input class="form-control" required disabled type="text" name="name" id="name" value="<?= $token ?>"/>
+            <input class="form-control" required readonly type="text" name="token" id="token" value="<?= $token ?>"/>
         </div>
     </div>
 

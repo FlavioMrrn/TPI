@@ -441,7 +441,7 @@ class User
      * @param string $pwd le mot de passe 
      * @return void
      */
-    public static function register(string $name, string $firstname, string $email, string $password, string $address, string $status = 'NotVerified', string $validationDate, string $validationToken) : void
+    public static function register(string $name, string $firstname, string $email, string $password, string $address, string $status = 'NotVerified', string $validationDate, string $validationToken): void
     {
         $sql = "INSERT INTO users (firstname, lastname, email, pwdHash, address, status, validationToken, validationDate) VALUES (:firstName, :name, :email, :pwd, :address, :status, :validationToken, :validationDate);";
         $req = DbConnection::getInstance()->prepare($sql);
@@ -486,7 +486,8 @@ class User
      * @param int nombre de caractères
      * @return string une chaine aléatoire
      */
-    public static function generateToken($length = 50) {
+    public static function generateToken($length = 50)
+    {
         $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $charactersLength = strlen($characters);
         $randomString = '';
@@ -494,5 +495,56 @@ class User
             $randomString .= $characters[rand(0, $charactersLength - 1)];
         }
         return $randomString;
+    }
+
+
+    /**
+     * Récupère la date limite de validation du compte
+     * @param string l'email du compte 
+     * @return DateTime la date limite de validation 
+     */
+    public static function getValidationDate(string $email)
+    {
+        $sql = "SELECT validationDate FROM users WHERE email = :email";
+        $req = DbConnection::getInstance()->prepare($sql);
+        $req->bindParam(":email", $email);
+        $req->execute();
+        return $req->fetch();
+    }
+
+
+    /**
+     * Vérifie si le token correspond a l'email
+     * @param string le token a vérifier
+     * @param string l'email du compte
+     * @return bool true si il correspond false si correspond pas
+     */
+    public static function verifyTokenEmail(string $token, string $email): bool
+    {
+        $sql = "SELECT * FROM users WHERE validationToken = :token AND email = :email;";
+        $req = DbConnection::getInstance()->prepare($sql);
+        $req->bindParam(":email", $email);
+        $req->bindParam(":token", $token);
+        $req->execute();
+
+        if ($req->fetch() === false) {
+            return false;
+        }
+
+        return true;
+    }
+
+
+    /**
+     * Valide le compte comportant l'email mis en paramètre
+     * @param string l'email du compte
+     * @return void
+     */
+    public static function validateAccount($email)
+    {
+        $sql = "UPDATE `ecommerce`.`users` SET `status` = 'Customer', `validationToken` = null, `validationDate` = null WHERE email = :email;";
+        $req = DbConnection::getInstance()->prepare($sql);
+        $req->bindParam(":email", $email);
+        $req->execute();
     }
 }
