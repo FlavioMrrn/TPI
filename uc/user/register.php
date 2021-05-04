@@ -14,6 +14,7 @@
 if (Session::getUser()->isAnonymous()) {
     Routes::addRoute('user', 'login', 'uc/user/controllers/login.php');
     Routes::addRoute('user', 'register', 'uc/user/controllers/register.php');
+    Routes::addRoute('user', 'recoverPassword', 'uc/user/controllers/recoverPassword.php');
 } else {
     Routes::addRoute('user', 'logout', 'uc/user/controllers/logout.php');
 }

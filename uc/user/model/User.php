@@ -422,15 +422,24 @@ class User
      * Vérifie si les données passées en paramètres correspondent à un utilisateur ou non
      * @param string $email L'email à vérifier
      * @param string $pwd le mot de passe à vérifier (actuellement pas corrélé avec la base)
-     * @return mixed soit un tableau avec le profil de l'utilisateur, 
+     * @return User soit un User avec le profil de l'utilisateur, 
      *               Soit null si l'identification n'a pas pu être vérifiée
      */
     public static function checkUserIdentification($email, $pwd): ?User
     {
-        if ($pwd != '1234') {
-            return null;
+        $pwdHash =  User::hashPassword($pwd);
+        $sql = "SELECT * FROM users WHERE email = :email and pwdHash = :pwd;";
+        $req = DbConnection::getInstance()->prepare($sql);
+        $req->setFetchMode(PDO::FETCH_CLASS, 'User');
+        $req->bindParam(":email", $email);
+        $req->bindParam(":pwd", $pwdHash);
+        $req->execute();
+        $r = $req->fetch();
+
+        if ($r === false) {
+            $r = null;
         }
-        return self::findByEmail($email);
+        return $r;
     }
 
     /**
@@ -441,7 +450,7 @@ class User
      * @param string $pwd le mot de passe 
      * @return void
      */
-    public static function register(string $name, string $firstname, string $email, string $password, string $address, string $status = 'NotVerified', string $validationDate, string $validationToken): void
+    public static function register(string $name, string $firstname, string $email, string $password, string $address, string $status = 'NotVerified', $validationDate, $validationToken): void
     {
         $sql = "INSERT INTO users (firstname, lastname, email, pwdHash, address, status, validationToken, validationDate) VALUES (:firstName, :name, :email, :pwd, :address, :status, :validationToken, :validationDate);";
         $req = DbConnection::getInstance()->prepare($sql);
@@ -473,28 +482,21 @@ class User
      * Compte le nombre d'utilisateurs dans la base de données
      * @return int le nombre d'utilisateurs de la base
      */
-    public static function countUsers()
+    public static function countUsers(): int
     {
         $sql = 'SELECT COUNT(*) FROM users';
         $req = DbConnection::getInstance()->prepare($sql);
         $req->execute();
-        return $req->fetch();
+        return $req->fetch()[0];
     }
 
     /**
      * Génère le token de validation pour un user
-     * @param int nombre de caractères
      * @return string une chaine aléatoire
      */
-    public static function generateToken($length = 50)
+    public static function generateToken(): string
     {
-        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        $charactersLength = strlen($characters);
-        $randomString = '';
-        for ($i = 0; $i < $length; $i++) {
-            $randomString .= $characters[rand(0, $charactersLength - 1)];
-        }
-        return $randomString;
+        return uniqid();
     }
 
 
@@ -503,23 +505,37 @@ class User
      * @param string l'email du compte 
      * @return DateTime la date limite de validation 
      */
-    public static function getValidationDate(string $email)
+    public static function getValidationDate(string $email): string
     {
         $sql = "SELECT validationDate FROM users WHERE email = :email";
         $req = DbConnection::getInstance()->prepare($sql);
         $req->bindParam(":email", $email);
         $req->execute();
-        return $req->fetch();
+        return $req->fetch()[0];
+    }
+
+    /**
+     * Récupère la date limite de validation du compte
+     * @param string l'email du compte 
+     * @return DateTime la date limite de validation 
+     */
+    public static function getREcoveryDate(string $email): string
+    {
+        $sql = "SELECT pwdRecoveryDate FROM users WHERE email = :email";
+        $req = DbConnection::getInstance()->prepare($sql);
+        $req->bindParam(":email", $email);
+        $req->execute();
+        return $req->fetch()[0];
     }
 
 
     /**
-     * Vérifie si le token correspond a l'email
+     * Vérifie si le token de validation de compte correspond a l'email
      * @param string le token a vérifier
      * @param string l'email du compte
      * @return bool true si il correspond false si correspond pas
      */
-    public static function verifyTokenEmail(string $token, string $email): bool
+    public static function verifyValidationTokenEmail(string $token, string $email): bool
     {
         $sql = "SELECT * FROM users WHERE validationToken = :token AND email = :email;";
         $req = DbConnection::getInstance()->prepare($sql);
@@ -534,17 +550,87 @@ class User
         return true;
     }
 
+    /**
+     * Vérifie si le token de récupération de mot de passe correspond a l'email
+     * @param string le token a vérifier
+     * @param string l'email du compte
+     * @return bool true si il correspond false si correspond pas
+     */
+    public static function verifyRecoverTokenEmail(string $token, string $email): bool
+    {
+        $sql = "SELECT * FROM users WHERE pwdRecoveryToken = :token AND email = :email;";
+        $req = DbConnection::getInstance()->prepare($sql);
+        $req->bindParam(":email", $email);
+        $req->bindParam(":token", $token);
+        $req->execute();
+
+        if ($req->fetch() === false) {
+            return false;
+        }
+
+        return true;
+    }
 
     /**
      * Valide le compte comportant l'email mis en paramètre
      * @param string l'email du compte
      * @return void
      */
-    public static function validateAccount($email)
+    public static function validateAccount(string $email): void
     {
         $sql = "UPDATE `ecommerce`.`users` SET `status` = 'Customer', `validationToken` = null, `validationDate` = null WHERE email = :email;";
         $req = DbConnection::getInstance()->prepare($sql);
         $req->bindParam(":email", $email);
+        $req->execute();
+    }
+
+
+    /**
+     * Modifie le champs lastConnection de la base de données à l'heure et le jour actuel
+     * @param string l'email du compte
+     * @return void
+     */
+    public static function updateLastLogin(string $email): void
+    {
+        $now = date_format(new DateTime("NOW"), 'Y-m-d H:i:s');
+        $sql = "UPDATE `ecommerce`.`users` SET `lastConnection` = :now WHERE (`email` = :email);";
+        $req = DbConnection::getInstance()->prepare($sql);
+        $req->bindParam("email", $email);
+        $req->bindParam(":now", $now);
+        $req->execute();
+    }
+
+    /**
+     * Ajoute une date limite pour la demande de modification de mot de passe ainsi qu'un token unique
+     * @param string email de l'utilisateur
+     * @param string token unique
+     * @return void
+     */
+    public static function askRecover(string $email, string $token)
+    {
+        $date = date_format(new DateTime("NOW"), 'Y-m-d H:i:s');
+        $date = date("Y-m-d H:i:s", strtotime('+2 hours', strtotime($date)));
+        $sql = "UPDATE `ecommerce`.`users` SET `pwdRecoveryDate` = :date, `pwdRecoveryToken` = :token WHERE (`email` = :email);";
+        $req = DbConnection::getInstance()->prepare($sql);
+        $req->bindParam(":email", $email);
+        $req->bindParam(":token", $token);
+        $req->bindParam(":date", $date);
+        $req->execute();
+    }
+
+    /**
+     * Modifie le mot de passe de l'utilisateur dans la base de données
+     * @param string l'email de l'tuilisateur
+     * @param string le mot de passe de l'utilisateur
+     * @return void
+     */
+    public static function modifyPassword($email, $password)
+    {
+        $password = self::hashPassword($password);
+        $sql = "UPDATE `ecommerce`.`users` SET `pwdHash` = :password, `pwdRecoveryDate` = null, `pwdRecoveryToken` = null WHERE (`email` = :email);";
+        $req = DbConnection::getInstance()->prepare($sql);
+        $req->bindParam(":email", $email);
+        $req->bindParam(":password", $password);
         $req->execute();
     }
 }

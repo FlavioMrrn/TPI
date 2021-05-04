@@ -15,11 +15,11 @@ if (filter_input(INPUT_POST, "verify")) {
     $token = filter_input(INPUT_POST, "token", FILTER_SANITIZE_STRING);
     if (!empty($email) && !empty($token)) {
         //vérification de la compatibilité
-        if (User::verifyTokenEmail($token, $email)) {
+        if (User::verifyValidationTokenEmail($token, $email)) {
             $now = new DateTime("NOW");
             $date = User::getValidationDate($email);
             $format = 'Y-m-d H:i:s';
-            $validation = DateTime::createFromFormat($format, $date[0]);
+            $validation = DateTime::createFromFormat($format, $date);
             //vérification de la date limite de validation
             if ($now < $validation) {
                 FlashMessage::AddMessage(FlashMessage::FLASH_RANKING_SUCCESS, "Félicitation, votre compte à été validé !");

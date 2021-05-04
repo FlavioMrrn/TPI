@@ -29,24 +29,30 @@ if (filter_has_var(INPUT_POST, "register")) {
                 $validationDate->modify('+1 day');
                 if (User::countUsers() == 0) {
                     $status = 'WebManager';
-
                 }
                 try {
-                    User::register($name, $firstname, $email, $password, $address, $status, date_format($validationDate, 'Y-m-d H:i:s'), $token);
-                    $message = "Bonjour,
+                    if ($status == 'WebManager') {
+                        User::register($name, $firstname, $email, $password, $address, $status, null, null);
+                        FlashMessage::AddMessage(FlashMessage::FLASH_RANKING_SUCCESS, "Votre compte à bien été crée. Vous êtes WebManager sur le site !");
+                    } else {
+                        User::register($name, $firstname, $email, $password, $address, $status, date_format($validationDate, 'Y-m-d H:i:s'), $token);
+                        $message = "Bonjour,
+    
+     Merci pour votre inscription à notre site.
+    
+     Veuillez valider votre email en cliquant sur ce lien: http://localhost/TPI/index.php?uc=user&action=verify&token=$token
+    
+     Bonne continuation !
+    
+     L'administration";
 
- Merci pour votre inscription à notre site.
+                        mail($email, "Validation de votre compte", $message);
+                        FlashMessage::AddMessage(FlashMessage::FLASH_RANKING_SUCCESS, "L'utilisateur à été enregistré avec succès. Un mail va vous être envoyé pour valider votre email.");
+                    }
 
- Veuillez valider votre email en cliquant sur ce lien: http://localhost/TPI/index.php?uc=user&action=verify&token=$token
-
- Bonne continuation !
-
- L'administration";
-
-                    mail($email, "Validation de votre compte", $message);
                     header("Location: " . Routes::PathTo('user', 'login'));
-                    FlashMessage::AddMessage(FlashMessage::FLASH_RANKING_SUCCESS, "L'utilisateur à été enregistré avec succès. Un mail va vous être envoyé pour valider votre email.");
                     exit();
+                    
                 } catch (\Throwable $th) {
                     FlashMessage::AddMessage(FlashMessage::FLASH_RANKING_DANGER, "Une erreure est survenue lors de la création de l'utilisateur, veuillez reessayer plus tard.");
                 }

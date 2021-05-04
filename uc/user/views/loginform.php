@@ -13,18 +13,18 @@
     </div>
 <?php endif; ?>
 
-<form action="<?= Routes::PathTo('user','login') ?>" method="post" class="form-horizontal">
+<form action="<?= Routes::PathTo('user', 'login') ?>" method="post" class="form-horizontal">
     <div class="form-group">
         <label class="control-label col-sm-3" for="email">Email: *</label>
         <div class="col-sm-9">
-            <input class="form-control" type="email" name="email" id="email"  />
+            <input class="form-control" type="email" name="email" id="email" />
         </div>
     </div>
 
     <div class="form-group">
         <label class="control-label col-sm-3" for="pwd">Mot de passe: *</label>
         <div class="col-sm-9">
-            <input class="form-control" type="password" name="pwd" id="pwd"  />
+            <input class="form-control" type="password" name="pwd" id="pwd" />
         </div>
     </div>
 
@@ -38,7 +38,8 @@
     </div>
     <div class="form-group">
         <div class="control-label col-sm-3">
-            <a href="<?= Routes::PathTo('user','registration') ?>">pas encore inscrit ?</a>
+            <p> <a href="<?= Routes::PathTo('user', 'registration') ?>">Pas encore inscrit ?</a></p>
+           <a href="<?= Routes::PathTo('user', 'recoverPassword') ?>">Mot de passe oublié ?</a>
         </div>
     </div>
 </form>
