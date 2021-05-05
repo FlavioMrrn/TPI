@@ -24,7 +24,8 @@ if (filter_input(INPUT_POST, "verify")) {
             if ($now < $validation) {
                 FlashMessage::AddMessage(FlashMessage::FLASH_RANKING_SUCCESS, "Félicitation, votre compte à été validé !");
                 User::validateAccount($email);
-                header("Location: " . Routes::PathTo("user", "login"));
+                Session::setUser(User::findById(Session::getUser()->getIdUser()));
+                header("Location: " . Routes::PathTo("main", "home"));
                 exit();
             } else {
                 FlashMessage::AddMessage(FlashMessage::FLASH_RANKING_DANGER, "Votre date limite de validation à expiré !");

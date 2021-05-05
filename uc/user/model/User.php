@@ -619,18 +619,73 @@ class User
     }
 
     /**
+     * 
+     */
+    public static function askModifyEmail($email, $token)
+    {
+        $sql = "UPDATE `ecommerce`.`users` SET  `validationToken` = :token WHERE (`email` = :email);";
+        $req = DbConnection::getInstance()->prepare($sql);
+        $req->bindParam(":email", $email);
+        $req->bindParam(":token", $token);
+        $req->execute();
+    }
+
+    /**
      * Modifie le mot de passe de l'utilisateur dans la base de données
      * @param string l'email de l'tuilisateur
      * @param string le mot de passe de l'utilisateur
      * @return void
      */
-    public static function modifyPassword($email, $password)
+    public static function modifyPassword(string $email, string $password): void
     {
         $password = self::hashPassword($password);
         $sql = "UPDATE `ecommerce`.`users` SET `pwdHash` = :password, `pwdRecoveryDate` = null, `pwdRecoveryToken` = null WHERE (`email` = :email);";
         $req = DbConnection::getInstance()->prepare($sql);
         $req->bindParam(":email", $email);
         $req->bindParam(":password", $password);
+        $req->execute();
+    }
+
+
+    /**
+     * Modifie les champs du profil sans prendre en compte le mot de passe
+     * @param string le nom
+     * @param string le prenom
+     * @param string l'email
+     * @param string l'adresse
+     * @param string l'id
+     * @return void
+     */
+    public static function updateProfil(string $name, string $firstname,  string $address, $id): void
+    {
+        $sql = "UPDATE `ecommerce`.`users` SET `firstName` = :firstname, `lastName` = :name, `address` = :address WHERE (`idUser` = :id);";
+        $req = DbConnection::getInstance()->prepare($sql);
+        $req->bindParam(':name', $name);
+        $req->bindParam(':id', $id);
+        $req->bindParam(':address', $address);
+        $req->bindParam(':firstname', $firstname);
+        $req->execute();
+    }
+    
+    public static function updateEmail(string $email, string $newemail): void
+    {
+        $sql = "UPDATE `ecommerce`.`users` SET `validationToken` = null, `email` = :newemail WHERE (`email` = :email);";
+        $req = DbConnection::getInstance()->prepare($sql);
+        $req->bindParam(':email', $email);
+        $req->bindParam(':newemail', $newemail);
+        $req->execute();
+    }
+
+    public static function updateProfilWithPassword(string $name, string $firstname, string $address, string $password, $id): void
+    {
+        $password = self::hashPassword($password);
+        $sql = "UPDATE `ecommerce`.`users` SET `firstName` = :firstname, `lastName` = :name, `address` = :address, `pwdHash` = :password WHERE (`idUser` = :id);";
+        $req = DbConnection::getInstance()->prepare($sql);
+        $req->bindParam(':name', $name);
+        $req->bindParam(':id', $id);
+        $req->bindParam(':address', $address);
+        $req->bindParam(':firstname', $firstname);
+        $req->bindParam(':password', $password);
         $req->execute();
     }
 }

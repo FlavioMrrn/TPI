@@ -17,8 +17,9 @@ if (Session::getUser()->isAnonymous()) {
     Routes::addRoute('user', 'recoverPassword', 'uc/user/controllers/recoverPassword.php');
 } else {
     Routes::addRoute('user', 'logout', 'uc/user/controllers/logout.php');
+    Routes::addRoute('user', 'profil', 'uc/user/controllers/profil.php');
 }
-
+Routes::AddRoute("user", "modifyEmail", 'uc/user/controllers/modifyEmail.php');
 Routes::addRoute('user', 'verify', 'uc/user/controllers/verify.php');
 
 if (Session::getUser()->hasRole([User::USER_ROLE_ANONYMOUS, User::USER_ROLE_BANNED, User::USER_ROLE_NOT_VERIFIED, User::USER_ROLE_UNDEFINED])) {
