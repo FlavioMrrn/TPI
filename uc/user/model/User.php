@@ -505,7 +505,7 @@ class User
      * @param string l'email du compte 
      * @return DateTime la date limite de validation 
      */
-    public static function getValidationDate(string $email): string
+    public static function getValidationDate(string $email): ?string
     {
         $sql = "SELECT validationDate FROM users WHERE email = :email";
         $req = DbConnection::getInstance()->prepare($sql);

@@ -11,30 +11,30 @@
     <div class="form-group">
         <label class="control-label col-sm-3" for="name">Nom: *</label>
         <div class="col-sm-9">
-            <input class="form-control" <?= Session::getUser()->hasRole(array('NotVerified', 'Banned')) ? 'readonly' : '' ?> type="text" name="name" id="name" value="<?= Session::getUser()->getLastName() ?>" />
+            <input class="form-control" <?= Session::getUser()->hasRole(array(User::USER_ROLE_NOT_VERIFIED, User::USER_ROLE_BANNED)) ? 'readonly' : '' ?> type="text" name="name" id="name" value="<?= Session::getUser()->getLastName() ?>" />
         </div>
     </div>
 
     <div class="form-group">
         <label class="control-label col-sm-3" for="firstname">Prénom: *</label>
         <div class="col-sm-9">
-            <input class="form-control" <?= Session::getUser()->hasRole(array('NotVerified', 'Banned')) ? 'readonly' : '' ?> required type="text" name="firstname" value="<?= Session::getUser()->getFirstName() ?>" id="firstname" />
+            <input class="form-control" <?= Session::getUser()->hasRole(array(User::USER_ROLE_NOT_VERIFIED, User::USER_ROLE_BANNED)) ? 'readonly' : '' ?> required type="text" name="firstname" value="<?= Session::getUser()->getFirstName() ?>" id="firstname" />
         </div>
     </div>
     <div class="form-group">
         <label class="control-label col-sm-3" for="address">Adresse: *</label>
         <div class="col-sm-9">
-            <input class="form-control" <?= Session::getUser()->hasRole(array('NotVerified', 'Banned')) ? 'readonly' : '' ?> required type="text" name="address" value="<?= Session::getUser()->getAddress() ?>" id="address" />
+            <input class="form-control" <?= Session::getUser()->hasRole(array(User::USER_ROLE_NOT_VERIFIED, User::USER_ROLE_BANNED)) ? 'readonly' : '' ?> required type="text" name="address" value="<?= Session::getUser()->getAddress() ?>" id="address" />
         </div>
     </div>
 
     <div class="form-group">
         <label class="control-label col-sm-3" for="email">Email: *</label>
         <div class="col-sm-9">
-            <input class="form-control" <?= Session::getUser()->hasRole(array('NotVerified', 'Banned')) ? 'readonly' : '' ?> required type="email" name="email" value="<?= Session::getUser()->getEmail() ?>" id="email" />
+            <input class="form-control" <?= Session::getUser()->hasRole(array(User::USER_ROLE_NOT_VERIFIED, User::USER_ROLE_BANNED)) ? 'readonly' : '' ?> required type="email" name="email" value="<?= Session::getUser()->getEmail() ?>" id="email" />
         </div>
     </div>
-    <?php if (!Session::getUser()->hasRole(array('NotVerified', 'Banned'))) : ?>
+    <?php if (!Session::getUser()->hasRole(array(User::USER_ROLE_NOT_VERIFIED, User::USER_ROLE_BANNED))) : ?>
         <div class="form-group">
             <label class="control-label col-sm-3" for="pwd">Mot de passe actuel: </label>
             <div class="col-sm-9">

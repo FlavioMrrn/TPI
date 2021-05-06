@@ -14,13 +14,30 @@
 if (Session::getUser()->isAnonymous()) {
     Routes::addRoute('user', 'login', 'uc/user/controllers/login.php');
     Routes::addRoute('user', 'register', 'uc/user/controllers/register.php');
-    Routes::addRoute('user', 'recoverPassword', 'uc/user/controllers/recoverPassword.php');
+    Routes::addRoute('user', 'logout', 'commons/controllers/accessDenied.php');
+    Routes::addRoute('user', 'profil', 'commons/controllers/accessDenied.php');
 } else {
+    Routes::addRoute('user', 'login', 'commons/controllers/accessDenied.php');
+    Routes::addRoute('user', 'register', 'commons/controllers/accessDenied.php');
     Routes::addRoute('user', 'logout', 'uc/user/controllers/logout.php');
     Routes::addRoute('user', 'profil', 'uc/user/controllers/profil.php');
 }
+
+if (Session::getUser()->hasCurrentRole(User::USER_ROLE_WEB_MANAGER)) {
+    $menu = new Menu('Users', null, true, Menu::MENU_MAIN_MENU_LEFT);
+    Routes::AddRoute('user', 'showUsers', 'uc/user/controllers/showUsers.php');
+    Routes::AddRoute('user', 'deleteUser', 'uc/user/controllers/deleteUser.php');
+    Routes::AddRoute('user', 'updateUser', 'uc/user/controllers/updateUser.php');
+    $menu->AddItem(new Menu('Afficher les utilisateurs', Routes::PathTo('user', 'showUsers'), true));
+} else {
+    Routes::AddRoute('user', 'showUsers', 'commons/controllers/accessDenied.php');
+    Routes::AddRoute('user', 'deleteUser', 'commons/controllers/accessDenied.php');
+    Routes::AddRoute('user', 'updateUser', 'commons/controllers/accessDenied.php');
+}
+
 Routes::AddRoute("user", "modifyEmail", 'uc/user/controllers/modifyEmail.php');
 Routes::addRoute('user', 'verify', 'uc/user/controllers/verify.php');
+Routes::addRoute('user', 'recoverPassword', 'uc/user/controllers/recoverPassword.php');
 
 if (Session::getUser()->hasRole([User::USER_ROLE_ANONYMOUS, User::USER_ROLE_BANNED, User::USER_ROLE_NOT_VERIFIED, User::USER_ROLE_UNDEFINED])) {
     Routes::addRoute('user', 'changeRole', 'commons/controllers/accessDenied.php');

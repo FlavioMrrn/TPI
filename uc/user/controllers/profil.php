@@ -1,6 +1,6 @@
 <?php
 // Projet: Application TPI / User
-// Script: Routeur controllers/profil.php
+// Script: Controller controllers/profil.php
 // Description: script d'affichage des informations de l'utilisateur avec modification possible
 // Auteur: Morrone Flavio
 // Version 0.1.1 MF 05.05.2021
@@ -9,7 +9,7 @@ require_once 'commons/views/Html.php';
 
 
 if (filter_input(INPUT_POST, 'updateProfil')) {
-    if (!Session::getUser()->hasRole(array('NotVerified', 'Banned', 'Anonymous'))) {
+    if (!Session::getUser()->hasRole(array(User::USER_ROLE_NOT_VERIFIED, User::USER_ROLE_BANNED, User::USER_ROLE_ANONYMOUS))) {
         $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
         $name = filter_input(INPUT_POST, 'name', FILTER_SANITIZE_STRING);
         $firstname = filter_input(INPUT_POST, 'firstname', FILTER_SANITIZE_STRING);
