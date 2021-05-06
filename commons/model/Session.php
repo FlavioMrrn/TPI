@@ -3,12 +3,16 @@
 // Script: Session.php
 // Description: Librairie de fonctions en lien avec la gestion des rôles à l'aide de la session
 // Auteur: Pascal Comminot
+//      Modifié par: Morrone Flavio
 // Version 1.0.0 PC 02.10.2017 / Codage initial
+// Version 1.0.1 MF 06.05.2021 / ajout du addTry() qui permet d'ajouter des essaies de connexion
 
 require_once "uc/user/model/User.php";
 
 class Session
 {
+    
+
     public const SESSION_USER_SIGNATURE = "SessionUser";
     /**
      * Retourne les roles de l'utilisateur courant
@@ -71,7 +75,7 @@ class Session
     {
         $_SESSION[Session::SESSION_USER_SIGNATURE] = new User();
     }
-    
+
     /**
      * Set définit une variable de session
      *
@@ -83,7 +87,7 @@ class Session
     {
         $_SESSION[$key] = $value;
     }
-    
+
     /**
      * Get retourne la valeur stockée dans la session, associée à la clé, si elle existe
      * Retourne null si la clé n'est pas définie
@@ -111,6 +115,22 @@ class Session
                 $user = new User();
                 $_SESSION[Session::SESSION_USER_SIGNATURE] = $user;
             }
+        }
+    }
+
+    /**
+     * Ajoute un essaie de connexion dans la variable de session avec l'email qui convient
+     * @param string l'email essayé
+     * @param int le nombre de fois essayé
+     * @return void
+     */
+    public static function addTry($email, $currentTryNumber)
+    {
+        if ($email == self::Get('previousEmailTry')) {
+            self::Set('currentTryNumber', ($currentTryNumber + 1));
+        } else {
+            self::Set('previousEmailTry', $email);
+            self::Set('currentTryNumber', 1);
         }
     }
 }

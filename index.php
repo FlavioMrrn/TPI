@@ -14,12 +14,17 @@ Session::start();
 // Chargement des classes liées au routage
 require_once 'commons/model/Menu.php';
 require_once 'commons/controllers/Routes.php';
+
+//Chargement des classes des uses cases
+require_once 'uc/log/model/Log.php';
+
 // il existe au moins une route par défaut...
 Routes::addRoute('main', 'home', 'commons/controllers/home.php');
 
 // Enregistrement des divers Use Cases 
 require_once 'uc/user/register.php';
 require_once 'uc/temporary/register.php';
+require_once 'uc/log/register.php';
 
 
 // récupération des paramètres de routage

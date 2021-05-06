@@ -619,9 +619,12 @@ class User
     }
 
     /**
-     * 
+     * Modifie les champs de la base permettant la modification de l'email (email + token)
+     * @param string email du compte
+     * @param string token unique à mettre dans la base
+     * @return void
      */
-    public static function askModifyEmail($email, $token)
+    public static function askModifyEmail(string $email, string $token)
     {
         $sql = "UPDATE `ecommerce`.`users` SET  `validationToken` = :token WHERE (`email` = :email);";
         $req = DbConnection::getInstance()->prepare($sql);
@@ -666,16 +669,17 @@ class User
         $req->bindParam(':firstname', $firstname);
         $req->execute();
     }
-    
-    public static function updateEmail(string $email, string $newemail): void
-    {
-        $sql = "UPDATE `ecommerce`.`users` SET `validationToken` = null, `email` = :newemail WHERE (`email` = :email);";
-        $req = DbConnection::getInstance()->prepare($sql);
-        $req->bindParam(':email', $email);
-        $req->bindParam(':newemail', $newemail);
-        $req->execute();
-    }
 
+    /**
+     * Modifie les champs du profil en prenant en compte la modification du mot de passe
+     * @param string le nouveau nom
+     * @param string le nouveau prenom
+     * @param string le nouvel email
+     * @param string la nouvelle adresse
+     * @param string le nouveau mot de passe
+     * @param string l'id
+     * @return void
+     */
     public static function updateProfilWithPassword(string $name, string $firstname, string $address, string $password, $id): void
     {
         $password = self::hashPassword($password);
@@ -688,4 +692,20 @@ class User
         $req->bindParam(':password', $password);
         $req->execute();
     }
+
+    /**
+     * Modifie l'email d'un compte
+     * @param string email de base du compte
+     * @param string le nouvel email du compte
+     * @return void
+     */
+    public static function updateEmail(string $email, string $newemail): void
+    {
+        $sql = "UPDATE `ecommerce`.`users` SET `validationToken` = null, `email` = :newemail WHERE (`email` = :email);";
+        $req = DbConnection::getInstance()->prepare($sql);
+        $req->bindParam(':email', $email);
+        $req->bindParam(':newemail', $newemail);
+        $req->execute();
+    }
+
 }

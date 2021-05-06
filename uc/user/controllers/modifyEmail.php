@@ -1,4 +1,10 @@
 <?php
+// Projet: Application TPI
+// Script: Controller modifyEmail.php
+// Description: permet la modification de l'email d'un utilisateur
+// Auteur: Morrone Flavio 
+// Version 0.1.1 MF 05.05.2021 
+
 require_once 'commons/views/Html.php';
 $token = filter_input(INPUT_GET, 'token');
 

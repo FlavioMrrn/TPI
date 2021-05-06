@@ -4,13 +4,6 @@
 // Description: formulaire de vérification d'email
 // Auteur: Morrone Flavio
 // Version 0.1.1 MF 03.05.2021
-
-// if (!$token) {
-//     header("Location:".Routes::PathTo('main','home'));
-//     FlashMessage::AddMessage(FlashMessage::FLASH_RANKING_WARNING, "Il manque des informations!");
-//     exit();
-// }
-
 ?>
 
 <form action="<?= Routes::PathTo('user', 'recoverPassword') ?>" method="post" class="form-horizontal">

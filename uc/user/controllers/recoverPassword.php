@@ -1,11 +1,17 @@
 <?php
+// Projet: Application TPI
+// Script: Controller recoverPassword.php
+// Description: permet la récupération de mot de passe d'un utilisateur
+// Auteur: Morrone Flavio 
+// Version 0.1.1 MF 05.05.2021 
+
 require_once 'commons/views/Html.php';
 
 $token = filter_input(INPUT_GET, 'token', FILTER_SANITIZE_STRING);
 
 if (filter_input(INPUT_POST, "askRecover")) {
     $email = filter_input(INPUT_POST, "email", FILTER_VALIDATE_EMAIL);
-    if (User::findByEmail($email) !== false) {
+    if (User::findByEmail($email) != false) {
         $token = User::generateToken();
         User::askRecover($email, $token);
         $message = "Bonjour,
@@ -19,6 +25,7 @@ Bonne continuation !
 L'administration";
         mail($email, "Récupération du mot de passe", $message);
     }
+    Log::addLog("Une demande de récupération de mot de passe à été effectué sur l'email $email");
     FlashMessage::AddMessage(FlashMessage::FLASH_RANKING_SUCCESS, "Votre demande à été prise en compte. Vous avez 2h pour modifier votre mot de passe en cliquant sur le lien reçu par mail.");
     header("Location: " . Routes::PathTo("user", "login"));
     exit;

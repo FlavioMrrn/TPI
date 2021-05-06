@@ -1,6 +1,6 @@
 <?php
 // Projet: Application TPI / User
-// Script: Routeur views/profil.php
+// Script: Views views/profil.php
 // Description: affichage du profil
 // Auteur: Morrone Flavio
 // Version 0.1.1 MF 05.05.2021
