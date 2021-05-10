@@ -7,8 +7,7 @@
 
 if (Session::getUser()->hasCurrentRole('WebManager')) {
     Routes::AddRoute('log', 'showLogs', 'uc/log/controllers/showLogs.php');
-    $menu = new Menu('Logs', null, true, Menu::MENU_MAIN_MENU_LEFT);
-    $menu->AddItem(new Menu('Afficher les logs', Routes::PathTo('log', 'showLogs'), true, Menu::MENU_STANDARD_ITEM));
+    $menu = new Menu('Logs',  Routes::PathTo('log', 'showLogs'), true, Menu::MENU_MAIN_MENU_LEFT);
 }
 else {
     Routes::addRoute('log', 'showLogs', 'commons/controllers/accessDenied.php');

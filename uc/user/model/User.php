@@ -61,6 +61,10 @@ class User
      */
     private $currentRole;
 
+    /**
+     * @var string la date de la dernière connection
+     */
+    private $lastConnection;
 
     /**
      * getIdUser retourne l'id de l'utilisateur
@@ -204,6 +208,27 @@ class User
      */ public function setPwd(?string $pwd): self
     {
         $this->pwdHash = $pwd; // à chiffrer
+        return $this;
+    }
+
+
+    /**
+     * Récupère la date de la dernière connection au site
+     * @return string la date
+     */
+    public function getLastConnection()
+    {
+        return $this->lastConnection;
+    }
+
+    /**
+     * Modifie la date de la dernière connection
+     * @param string la date
+     * @return self
+     */
+    public function setLastConnection(?string $lastConnection): self
+    {
+        $this->lastConnection = $lastConnection;
         return $this;
     }
 
@@ -708,4 +733,66 @@ class User
         $req->execute();
     }
 
+    /**
+     * SearchUser effectue une recherche sur la table dico
+     * Le mot recherché peut se trouver dans le champ nom, pérnom ou email
+     *
+     * @param  mixed $word
+     * @param int offset    
+     * @param int limit    
+     * @return array
+     */
+    public static function SearchUser(?string $word, int $offset, int $limit): array
+    {
+        $word = "%$word%";
+        $sql = 'SELECT * FROM users
+                 WHERE firstName LIKE :word
+                 OR lastName LIKE :word
+                 OR email LIKE :word
+                 LIMIT :offset, :limit';
+        $req = DbConnection::getInstance()->prepare($sql);
+        $req->setFetchMode(PDO::FETCH_CLASS, 'User');
+        $req->bindParam(":word", $word, PDO::PARAM_STR);
+        $req->bindParam(":offset", $offset, PDO::PARAM_INT);
+        $req->bindParam(":limit", $limit, PDO::PARAM_INT);
+        $req->execute();
+        return $req->fetchAll();
+    }
+
+    /**
+     * SearchCount compte le nombre d'enregistrements qui comporte le mot $word
+     * dans le mot ou la définition
+     *
+     * @param  mixed $word
+     * @return int
+     */
+    public static function SearchCount(?string $word): int
+    {
+        $word = "%$word%";
+        $sql = "SELECT COUNT(*) FROM users 
+        WHERE firstName LIKE :word
+        OR lastName LIKE :word
+        OR email LIKE :word";
+        $req = DbConnection::getInstance()->prepare($sql);
+        $req->bindParam(":word", $word, PDO::PARAM_STR);
+        $req->execute();
+        return $req->fetchColumn();
+    }
+
+    public static function deleteUser(int $id)
+    {
+        $sql = "DELETE FROM `ecommerce`.`users` WHERE (`idUser` = :id);";
+        $req = DbConnection::getInstance()->prepare($sql);
+        $req->bindParam(":id", $id);
+        $req->execute();
+    }
+
+    public static function countCommands(int $idUser)
+    {
+        $sql = "SELECT COUNT(*) FROM commands where idUser = :idUser;";
+        $req = DbConnection::getInstance()->prepare($sql);
+        $req->bindParam(":idUser", $idUser);
+        $req->execute();
+        return $req->fetchColumn();
+    }
 }
