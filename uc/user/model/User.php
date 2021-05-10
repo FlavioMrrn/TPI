@@ -67,6 +67,38 @@ class User
     private $lastConnection;
 
     /**
+     * Date limite pour la demande de récupération de mot de passe
+     */
+    private $pwdRecoveryDate;
+
+    /**
+     * Date limite de validation du compte
+     */
+    private $validateDate;
+
+    public function getValidationDate()
+    {
+        return $this->validateDate;
+    }
+
+    public function setValidationDate($date): self
+    {
+        $this->validateDate = $date;
+        return $this;
+    }
+
+    public function getRecoveryDate()
+    {
+        return $this->pwdRecoveryDate;
+    }
+
+    public function setRecoveryDate($date)
+    {
+        $this->pwdRecoveryDate = $date;
+        return $this;
+    }
+
+    /**
      * getIdUser retourne l'id de l'utilisateur
      *
      * @return ?int L'id peut être null, dans le cas de la création d'un nouvel enregistrement.
@@ -530,28 +562,29 @@ class User
      * @param string l'email du compte 
      * @return DateTime la date limite de validation 
      */
-    public static function getValidationDate(string $email): ?string
+
+    /* public static function getValidationDate(string $email): ?string
     {
         $sql = "SELECT validationDate FROM users WHERE email = :email";
         $req = DbConnection::getInstance()->prepare($sql);
         $req->bindParam(":email", $email);
         $req->execute();
         return $req->fetch()[0];
-    }
+    }*/
 
     /**
      * Récupère la date limite de validation du compte
      * @param string l'email du compte 
      * @return DateTime la date limite de validation 
      */
-    public static function getREcoveryDate(string $email): string
+    /*public static function getREcoveryDate(string $email): string
     {
         $sql = "SELECT pwdRecoveryDate FROM users WHERE email = :email";
         $req = DbConnection::getInstance()->prepare($sql);
         $req->bindParam(":email", $email);
         $req->execute();
         return $req->fetch()[0];
-    }
+    }*/
 
 
     /**

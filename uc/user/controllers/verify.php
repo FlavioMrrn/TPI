@@ -15,9 +15,11 @@ if (filter_input(INPUT_POST, "verify")) {
     $token = filter_input(INPUT_POST, "token", FILTER_SANITIZE_STRING);
     if (!empty($email) && !empty($token)) {
         //vérification de la compatibilité
-        if (User::verifyValidationTokenEmail($token, $email)) {
+        $user = User::findByEmail($email);
+        if ($user !== false) {
+            if (User::verifyValidationTokenEmail($token, $email)) {
             $now = new DateTime("NOW");
-            $date = User::getValidationDate($email);
+            $date = $user->getValidationDate();
             $format = 'Y-m-d H:i:s';
             $validation = DateTime::createFromFormat($format, $date);
             //vérification de la date limite de validation
@@ -33,6 +35,8 @@ if (filter_input(INPUT_POST, "verify")) {
         } else {
             FlashMessage::AddMessage(FlashMessage::FLASH_RANKING_DANGER, "Le token et l'email ne correspondent pas !");
         }
+        }
+        
     }
 }
 

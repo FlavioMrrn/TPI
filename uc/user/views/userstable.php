@@ -53,7 +53,7 @@
 
                 $date = new DateTime("NOW");
                 $lastYear = $date->modify('-1 year');
-                $validateDate = User::getValidationDate($u->getEmail());
+                $validateDate = $u->getValidationDate;
                 $validateDate = DateTime::createFromFormat('Y-m-d H:i:s', $validateDate);
                 $lastConnection = date('Y-m-d H:i:s', strtotime($u->getLastConnection()));
                 $countCommands = User::countCommands($u->getIdUser());

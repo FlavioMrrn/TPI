@@ -35,11 +35,12 @@ L'administration";
     $confirmPassword = filter_input(INPUT_POST, "confirmPwd", FILTER_SANITIZE_STRING);
     $token = filter_input(INPUT_POST, "token", FILTER_SANITIZE_STRING);
     if ($password == $confirmPassword) {
-        if (User::findByEmail($email) !== false) {
+        $user = User::findByEmail($email);
+        if ($user !== false) {
             if (User::verifyRecoverTokenEmail($token, $email)) {
                 $format = 'Y-m-d H:i:s';
                 $now = new DateTime("NOW");
-                $date = User::getREcoveryDate($email);
+                $date = $user->getRecoveryDate();
                 $validation = DateTime::createFromFormat($format, $date);
                 //vérification de la date limite de validation
                 if ($now < $validation) {
