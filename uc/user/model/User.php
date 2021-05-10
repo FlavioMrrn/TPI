@@ -431,14 +431,18 @@ class User
      * @param int $idUser ID de l'utilsateur dont on veut le détail
      * @return User|null
      */
-    public static function findById(int $id): User
+    public static function findById(int $id): ?User
     {
         $sql = "SELECT idUser, firstName, lastName, address, email, pwdHash, status FROM users WHERE idUser= :id";
         $req = DbConnection::getInstance()->prepare($sql);
         $req->setFetchMode(PDO::FETCH_CLASS, 'User');
         $req->bindParam(':id', $id);
         $req->execute();
-        return $req->fetch();
+        $r = $req->fetch();
+        if ($r === false) {
+            return null;
+        }
+        return $r;
     }
 
 

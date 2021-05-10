@@ -8,7 +8,7 @@
 require_once 'commons/views/Html.php';
 $id = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
 $user = User::findById($id);
-if ($user === false) {
+if ($user === null) {
     FlashMessage::AddMessage(FlashMessage::FLASH_RANKING_DANGER, "L'utilisateur n'existe pas.");
     header("Location: " . Routes::PathTo('user', 'showUsers'));
     exit;
