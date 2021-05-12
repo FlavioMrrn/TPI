@@ -6,13 +6,6 @@
 // Version 0.1.1 MF 12.05.2021
 
 ?>
-
-<?php if (!empty($errors['Register'])) : ?>
-    <div class="alert alert-danger col-sm-9 col-sm-offset-3">
-        <?php echo $errors['Register']; ?>
-    </div>
-<?php endif; ?>
-
 <form action="<?= Routes::PathTo('category', 'addCategory') ?>" method="post" class="form-horizontal">
 
     <div class="form-group">

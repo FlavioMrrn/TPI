@@ -151,7 +151,7 @@ class Category
      */
     public static function getAllCategories(): array
     {
-        $sql = 'SELECT * FROM categories ORDER BY idParentCategory ASC;';
+        $sql = 'SELECT * FROM categories ORDER BY idCategory ASC;';
         $req = DbConnection::getInstance()->prepare($sql);
         $req->setFetchMode(PDO::FETCH_CLASS, 'Category');
         $req->execute();
@@ -178,7 +178,7 @@ class Category
 
         $menus = [];
         foreach ($sous_menu as $m) {
-            if ($m->children != array() || $m->getIdParent() == null) {
+            if ($m->getIdParent() == null) {
                 if (!self::isInArray($m, $menus)) {
                     $menus[] = $m;
                 }
@@ -233,13 +233,26 @@ class Category
         $req->execute();
     }
 
-    public static function makeParentSelect(): string
+    public static function updateCategory($id, $title, $description, $idParent)
+    {
+        $sql = "UPDATE `ecommerce`.`categories` SET `title` = :title, `description` = :description, `idParentCategory` = :idParent WHERE (`idCategory` = :id);";
+        $req = DbConnection::getInstance()->prepare($sql);
+        $req->bindParam(':id', $id);
+        $req->bindParam(':title', $title);
+        $req->bindParam(':description', $description);
+        $req->bindParam(':idParent', $idParent);
+        $req->execute();
+    }
+
+    public static function makeParentSelect($id = null, $idParent = null): string
     {
         $result = "<select name='idParent' class='form-select'>";
-        $result .= "<option selected> Aucun </option>";
+        $result .= "<option value='' > Aucun </option>";
         $categories = self::getAllCategories();
         foreach ($categories as $c) {
-            $result .= "<option value='" . $c->getIdCategory() . "'>" . $c->getTitle() . "</option>";
+            if ($c->getIdCategory() != $id) {
+                $result .= "<option value='" . $c->getIdCategory() . "' " . ($idParent == $c->getIdCategory() ? "selected" : "") . " >" . $c->getTitle() . "</option>";
+            }
         }
         $result .= '</select>';
 

@@ -4,6 +4,7 @@ if (filter_has_var(INPUT_POST, 'deleteCategory')) {
     if (Category::findById($id) != null) {
         if (!Category::hasChild($id)) {
             FlashMessage::AddMessage(FlashMessage::FLASH_RANKING_SUCCESS, "La catégorie à bien été supprimé.");
+            Category::deleteCategory($id);
         } else {
             FlashMessage::AddMessage(FlashMessage::FLASH_RANKING_DANGER, "Il est impossible de supprimer cette catégorie.");
         }

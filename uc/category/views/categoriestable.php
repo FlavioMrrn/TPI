@@ -29,7 +29,7 @@
             <?php
             if (Session::getUser()->hasCurrentRole(User::USER_ROLE_WEB_MANAGER)) : ?>
                 <td>
-                    <form method="POST" action="<?= Routes::PathTo('user', 'editUser') ?>">
+                    <form method="POST" action="<?= Routes::PathTo('category', 'updateCategory') ?>">
                         <input type="hidden" name='id' value='<?= $c->getIdCategory() ?>'>
                         <button type="submit" name="edit" class="btn btn-primary"><span class="fas fa-pen"></span></button>
                     </form>
