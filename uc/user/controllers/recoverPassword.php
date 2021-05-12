@@ -14,15 +14,7 @@ if (filter_input(INPUT_POST, "askRecover")) {
     if (User::findByEmail($email) != false) {
         $token = User::generateToken();
         User::askRecover($email, $token);
-        $message = "Bonjour,
-        
- Merci pour votre inscription à notre site.
-       
- Veuillez valider votre email en cliquant sur ce lien: http://localhost/TPI/index.php?uc=user&action=recoverPassword&token=$token
-       
-Bonne continuation !
-       
-L'administration";
+        $message = "Bonjour, \r\n Merci pour votre inscription à notre site. \r\n  Veuillez valider votre email en cliquant sur ce lien: http://localhost/TPI/index.php?uc=user&action=recoverPassword&token=$token \r\n Bonne continuation ! \r\n L'administration";
         mail($email, "Récupération du mot de passe", $message);
     }
     Log::addLog("Une demande de récupération de mot de passe à été effectué sur l'email $email");

@@ -22,7 +22,7 @@ if (filter_has_var(INPUT_POST, "submit")) {
     $user = User::checkUserIdentification($email, $pwd);
     if ($user == null) {
         FlashMessage::AddMessage(FlashMessage::FLASH_RANKING_DANGER, "Identification ou mot de passe invalide");
-        $currentTryNumber =Session::Get('currentTryNumber');
+        $currentTryNumber = Session::Get('currentTryNumber');
         if ($currentTryNumber >= 3) {
             Log::addLog("La connexion a echoué $currentTryNumber fois de suite sur le même poste avec l'email $email.");
         }

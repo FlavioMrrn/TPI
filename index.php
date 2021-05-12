@@ -16,6 +16,7 @@ require_once 'commons/model/Menu.php';
 require_once 'commons/controllers/Routes.php';
 
 //Chargement des classes des uses cases
+require_once 'uc/category/model/Category.php';
 require_once 'uc/log/model/Log.php';
 
 // il existe au moins une route par défaut...
@@ -25,6 +26,7 @@ Routes::addRoute('main', 'home', 'commons/controllers/home.php');
 require_once 'uc/user/register.php';
 require_once 'uc/temporary/register.php';
 require_once 'uc/log/register.php';
+require_once 'uc/category/register.php';
 
 
 // récupération des paramètres de routage

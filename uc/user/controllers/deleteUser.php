@@ -22,6 +22,8 @@ if ($user === null) {
     if ($validateDate !== false) {
         if ($validateDate < $date && $user->hasRole(User::USER_ROLE_NOT_VERIFIED)) {
             User::deleteUser($user->getIdUser());
+            $message = "Bonjour, \r\n \r\n Votre compte à été supprimé par un administrateur. \r\n \r\n Vous ne pouvez donc plus vous connecter.\r\n \r\n Si vous pensez que c'est une erreur, contactez-nous. \r\n \r\n L'administration";
+            mail($user->getEmail(), "Supression de compte", $message);
             FlashMessage::AddMessage(FlashMessage::FLASH_RANKING_SUCCESS, "Le compte " . $user->getEmail() . " à bien été supprimé.");
         } else {
             FlashMessage::AddMessage(FlashMessage::FLASH_RANKING_DANGER, "L'utilisateur ne peut pas être supprimé.");

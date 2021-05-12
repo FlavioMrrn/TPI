@@ -24,15 +24,18 @@ if (Session::getUser()->isAnonymous()) {
 }
 
 if (Session::getUser()->hasCurrentRole(User::USER_ROLE_WEB_MANAGER)) {
-    $menu = new Menu('Users', null, true, Menu::MENU_MAIN_MENU_LEFT);
+    $menu = new Menu('Utilisateurs', null, true, Menu::MENU_MAIN_MENU_LEFT);
     Routes::AddRoute('user', 'showUsers', 'uc/user/controllers/showUsers.php');
     Routes::AddRoute('user', 'deleteUser', 'uc/user/controllers/deleteUser.php');
-    Routes::AddRoute('user', 'updateUser', 'uc/user/controllers/updateUser.php');
+    Routes::AddRoute('user', 'editUser', 'uc/user/controllers/editUser.php');
+    Routes::AddRoute('user', 'addUser', 'uc/user/controllers/addUser.php');
+    $menu->AddItem(new Menu("Ajouter un utilisateur", Routes::PathTo('user', 'addUser'), true));
     $menu->AddItem(new Menu('Afficher les utilisateurs', Routes::PathTo('user', 'showUsers'), true));
 } else {
     Routes::AddRoute('user', 'showUsers', 'commons/controllers/accessDenied.php');
     Routes::AddRoute('user', 'deleteUser', 'commons/controllers/accessDenied.php');
-    Routes::AddRoute('user', 'updateUser', 'commons/controllers/accessDenied.php');
+    Routes::AddRoute('user', 'addUser', 'commons/controllers/accessDenied.php');
+    Routes::AddRoute('user', 'editUser', 'commons/controllers/accessDenied.php');
 }
 
 Routes::AddRoute("user", "modifyEmail", 'uc/user/controllers/modifyEmail.php');

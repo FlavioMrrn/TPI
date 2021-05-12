@@ -40,17 +40,14 @@
             <td><?= $u->getEmail() ?></td>
             <td><?= implode(', ', $u->getStatus()) ?></td>
             <td>
-                <form action="<?= Routes::PathTo('user', 'editUser') ?>">
+                <form method="POST" action="<?= Routes::PathTo('user', 'editUser') ?>">
                     <input type="hidden" name='id' value='<?= $u->getIdUser() ?>'>
-                    <button type="submit" name="update" class="btn btn-primary"><span class="fas fa-pen"></span></button>
+                    <button type="submit" name="edit" class="btn btn-primary"><span class="fas fa-pen"></span></button>
                 </form>
 
 
                 <!-- Modal pour delete-->
                 <?php
-
-
-
                 $date = new DateTime("NOW");
                 $lastYear = $date->modify('-1 year');
                 $validateDate = $u->getValidationDate();

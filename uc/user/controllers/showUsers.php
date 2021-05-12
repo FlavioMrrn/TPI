@@ -6,7 +6,7 @@
 // Version 0.1.1 MF 05.05.2021
 require_once 'commons/views/Html.php';
 
-const DICO_SEARCH_QUERY = "DicoSearchQuery";
+const USER_SEARCH_QUERY = "UserSearchQuery";
 const PAGE_SIZE =  10;
 
 $page = filter_input(INPUT_GET, 'page', FILTER_VALIDATE_INT);
@@ -16,9 +16,9 @@ if (empty($page)) {
 
 $word = filter_input(INPUT_POST, 'word', FILTER_SANITIZE_STRING);
 if (is_null($word)) {
-    $word = Session::get(DICO_SEARCH_QUERY);
+    $word = Session::get(USER_SEARCH_QUERY);
 } else {
-    Session::set(DICO_SEARCH_QUERY, $word);
+    Session::set(USER_SEARCH_QUERY, $word);
 }
 
 $count = User::SearchCount($word);
