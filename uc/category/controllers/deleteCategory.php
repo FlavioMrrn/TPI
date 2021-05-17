@@ -1,4 +1,10 @@
 <?php
+// Projet: Application TPI 
+// Script: Controlleur deleteCategory.php
+// Description: script réalisant la suppression d'une catégorie
+// Auteur: Morrone Flavio
+// Version 0.1.1 MF 12.05.2021
+
 if (filter_has_var(INPUT_POST, 'deleteCategory')) {
     $id = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
     if (Category::findById($id) != null) {

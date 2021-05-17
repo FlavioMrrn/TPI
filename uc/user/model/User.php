@@ -816,7 +816,12 @@ class User
         return $req->fetchColumn();
     }
 
-    public static function deleteUser(int $id)
+    /**
+     * Supprime l'utilisateur de la base de données
+     * @param int l'id de l'utilisateur
+     * @return void
+     */
+    public static function deleteUser(int $id): void
     {
         $sql = "DELETE FROM `ecommerce`.`users` WHERE (`idUser` = :id);";
         $req = DbConnection::getInstance()->prepare($sql);
@@ -824,6 +829,11 @@ class User
         $req->execute();
     }
 
+    /**
+     * Compte le nombre de commande d'un utilisateur
+     * @param int l'id de l'utilisateur
+     * @return int
+     */
     public static function countCommands(int $idUser)
     {
         $sql = "SELECT COUNT(*) FROM commands where idUser = :idUser;";

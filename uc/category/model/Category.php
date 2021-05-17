@@ -1,9 +1,9 @@
 <?php
 // Projet: Application TPI
-// Script: Modèle Log.php
-// Description: contient la classe log et les méthodes en lien avec la table logs 
+// Script: Modèle Category.php
+// Description: contient la classe Category et les méthodes en lien avec la table categories 
 // Auteur: Morrone Flavio 
-// Version 0.1.1 MF 06.05.2021 
+// Version 0.1.1 MF 12.05.2021 
 
 require_once 'commons/model/DbConnection.php';
 
@@ -129,7 +129,12 @@ class Category
         return $this;
     }
 
-    public static function findById($id): ?Category
+    /**
+     * Cherche dans la base de données si une catégory avec l'id mis en paramètre existe
+     * @param int $id
+     * @return ?Category retourne la catégorie trouvé ou null
+     */
+    public static function findById(int $id): ?Category
     {
         $sql = 'SELECT * FROM categories WHERE idCategory = :id';
         $req = DbConnection::getInstance()->prepare($sql);
@@ -163,7 +168,7 @@ class Category
      * @param array les catégories de la base
      * @return array
      */
-    public static function buildArrayWithChild($categories): array
+    public static function buildArrayWithChild(array $categories): array
     {
         $sous_menu = [];
         foreach ($categories as $c) {
@@ -187,13 +192,19 @@ class Category
         return $menus;
     }
 
-    private static function  isInArray($element, $array)
+    /**
+     * Vérifie si un élément existe à n'importe quel endroit d'un tableau (sous tableau etc)
+     * @param mixed l'element à vérifier
+     * @param array le tableau 
+     * @return bool
+     */
+    private static function isInArray($element, $array)
     {
-        foreach ($array as $m) {
-            if ($m->children != array()) {
-                if (in_array($element, $m->children)) {
+        foreach ($array as $e) {
+            if ($e->children != array()) {
+                if (in_array($element, $e->children)) {
                     return true;
-                } else if (self::isInArray($element, $m->children)) {
+                } else if (self::isInArray($element, $e->children)) {
                     return true;
                 }
             }
@@ -201,7 +212,12 @@ class Category
         return false;
     }
 
-    public static function hasChild($id)
+    /**
+     * Vérifie si une catégorie possède un enfant dans la base de données
+     * @param int l'id de la catégorie
+     * @return bool
+     */
+    public static function hasChild(int $id)
     {
         $sql = 'SELECT * FROM categories WHERE idParentCategory = :id;';
         $req = DbConnection::getInstance()->prepare($sql);
@@ -215,7 +231,11 @@ class Category
         }
     }
 
-    public static function deleteCategory($id)
+    /**
+     * Supprime une catégorie de la base de données
+     * @param int l'id de la catégorie
+     */
+    public static function deleteCategory(int $id)
     {
         $sql = 'DELETE FROM `ecommerce`.`categories` WHERE (`idCategory` = :id);';
         $req = DbConnection::getInstance()->prepare($sql);
@@ -223,7 +243,13 @@ class Category
         $req->execute();
     }
 
-    public static function addCategory($title, $description, $idParent)
+    /**
+     * Ajoute une catégorie dans la base de données
+     * @param string le titre
+     * @param string la description
+     * @param int l'id du parent
+     */
+    public static function addCategory(string $title, string  $description, int $idParent): void
     {
         $sql = 'INSERT INTO `ecommerce`.`categories` (`title`, `description`, `idParentCategory`) VALUES (:title, :description, :idParent);';
         $req = DbConnection::getInstance()->prepare($sql);
@@ -233,7 +259,13 @@ class Category
         $req->execute();
     }
 
-    public static function updateCategory($id, $title, $description, $idParent)
+    /**
+     * Modifie une catégorie dans la base de données
+     * @param string le titre
+     * @param string la description
+     * @param int l'id du parent
+     */
+    public static function updateCategory(int $id,string $title,string $description,int $idParent): void
     {
         $sql = "UPDATE `ecommerce`.`categories` SET `title` = :title, `description` = :description, `idParentCategory` = :idParent WHERE (`idCategory` = :id);";
         $req = DbConnection::getInstance()->prepare($sql);
@@ -244,6 +276,12 @@ class Category
         $req->execute();
     }
 
+    /**
+     * Créer le select pour la modification de parents
+     * @param int l'id de la category actuelle
+     * @param int l'id du parent de la category actuelle
+     * @return string le select 
+     */
     public static function makeParentSelect($id = null, $idParent = null): string
     {
         $result = "<select name='idParent' class='form-select'>";

@@ -1,4 +1,9 @@
 <?php
+// Projet: Application TPI
+// Script: Controlleur editUser.php
+// Description: permet la modification d'un utilisateur
+// Auteur: Morrone Flavio 
+// Version 0.1.1 MF 11.05.2021 
 require_once 'commons/views/Html.php';
 
 $user = null;

@@ -14,10 +14,7 @@
     </tr>
 
     <?php
-    // On fait une boucle pour lister tout ce que contient la table :
     foreach ($logs as $l) :
-        // Seul le Webmanager peut éditer/supprimer toutes les définitions
-        // Le ProductManager ou le SaleManager peuvent éditer/supprimer leur propres définitions
     ?>
         <tr>
             <td><?= $l->getIdLog() ?></td>

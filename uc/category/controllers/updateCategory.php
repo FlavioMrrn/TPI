@@ -1,4 +1,9 @@
 <?php
+// Projet: Application TPI / User
+// Script: Controlleur updateCategory.php
+// Description: permet la modification d'une catégorie
+// Auteur: Morrone Flavio
+// Version 0.1.1 MF 12.05.2021 / Codage initial
 require_once 'commons/views/Html.php';
 
 $id = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
