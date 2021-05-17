@@ -12,7 +12,6 @@
         <th>Titre</th>
         <th>Description</th>
         <th>IdParent</th>
-        <th></th>
     </tr>
 
     <?php

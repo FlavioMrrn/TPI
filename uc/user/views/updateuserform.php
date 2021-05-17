@@ -41,6 +41,12 @@
             <input class="form-control" required type="email" name="email" id="email" value="<?= $user == null ? '' : $user->getEmail() ?>" />
         </div>
     </div>
+    <div class="form-group">
+        <label class="control-label col-sm-3" for="status">Status: *</label>
+        <div class="col-sm-9">
+            <input class="form-control" required type="text" name="status" id="status" value="<?= $user == null ? '' : implode(',', $user->getStatus()) ?>" />
+        </div>
+    </div>
 
     <div class="form-group">
         <label class="control-label col-sm-3" for="pwd">Mot de passe: </label>

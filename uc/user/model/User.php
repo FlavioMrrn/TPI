@@ -560,37 +560,6 @@ class User
         return uniqid();
     }
 
-
-    /**
-     * Récupère la date limite de validation du compte
-     * @param string l'email du compte 
-     * @return DateTime la date limite de validation 
-     */
-
-    /* public static function getValidationDate(string $email): ?string
-    {
-        $sql = "SELECT validationDate FROM users WHERE email = :email";
-        $req = DbConnection::getInstance()->prepare($sql);
-        $req->bindParam(":email", $email);
-        $req->execute();
-        return $req->fetch()[0];
-    }*/
-
-    /**
-     * Récupère la date limite de validation du compte
-     * @param string l'email du compte 
-     * @return DateTime la date limite de validation 
-     */
-    /*public static function getREcoveryDate(string $email): string
-    {
-        $sql = "SELECT pwdRecoveryDate FROM users WHERE email = :email";
-        $req = DbConnection::getInstance()->prepare($sql);
-        $req->bindParam(":email", $email);
-        $req->execute();
-        return $req->fetch()[0];
-    }*/
-
-
     /**
      * Vérifie si le token de validation de compte correspond a l'email
      * @param string le token a vérifier
@@ -721,13 +690,15 @@ class User
      * @param string l'id
      * @return void
      */
-    public static function updateProfil(string $name, string $firstname,  string $address, $id): void
+    public static function updateProfil(string $name, string $firstname, string $address, string $status, $id): void
     {
-        $sql = "UPDATE `ecommerce`.`users` SET `firstName` = :firstname, `lastName` = :name, `address` = :address WHERE (`idUser` = :id);";
+        $status = str_replace(' ', '', $status);
+        $sql = "UPDATE `ecommerce`.`users` SET `firstName` = :firstname, `lastName` = :name, `address` = :address, `status` = :status WHERE (`idUser` = :id);";
         $req = DbConnection::getInstance()->prepare($sql);
         $req->bindParam(':name', $name);
         $req->bindParam(':id', $id);
         $req->bindParam(':address', $address);
+        $req->bindParam(':status', $status);
         $req->bindParam(':firstname', $firstname);
         $req->execute();
     }
@@ -742,16 +713,17 @@ class User
      * @param string l'id
      * @return void
      */
-    public static function updateProfilWithPassword(string $name, string $firstname, string $address, string $password, $id): void
+    public static function updateProfilWithPassword(string $name, string $firstname, string $address, string $status, string $password, $id): void
     {
         $password = self::hashPassword($password);
-        $sql = "UPDATE `ecommerce`.`users` SET `firstName` = :firstname, `lastName` = :name, `address` = :address, `pwdHash` = :password WHERE (`idUser` = :id);";
+        $sql = "UPDATE `ecommerce`.`users` SET `firstName` = :firstname, `lastName` = :name, `status` = :status, `address` = :address, `pwdHash` = :password WHERE (`idUser` = :id);";
         $req = DbConnection::getInstance()->prepare($sql);
         $req->bindParam(':name', $name);
         $req->bindParam(':id', $id);
         $req->bindParam(':address', $address);
         $req->bindParam(':firstname', $firstname);
         $req->bindParam(':password', $password);
+        $req->bindParam(':status', $status);
         $req->execute();
     }
 
