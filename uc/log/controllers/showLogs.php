@@ -1,6 +1,6 @@
 <?php
 // Projet: Application TPI
-// Script: Controlleur showLogs.php
+// Script: Controller showLogs.php
 // Description: permet l'affichage des logs pour l'administrateur
 // Auteur: Morrone Flavio 
 // Version 0.1.1 MF 06.05.2021 

@@ -1,6 +1,6 @@
 <?php
 // Projet: Application TPI / User
-// Script: Controlleur controllers/profil.php
+// Script: Controller controllers/profil.php
 // Description: script d'affichage des informations de l'utilisateur avec modification possible
 // Auteur: Morrone Flavio
 // Version 0.1.1 MF 05.05.2021
@@ -23,7 +23,7 @@ if (filter_input(INPUT_POST, 'updateProfil')) {
                 if ($email != Session::getUser()->getEmail()) {
                     $token = User::generateToken();
                     //envoyer un mail
-                    $message = "Bonjour, \r\n \r\n Merci pour votre inscription à notre site. \r\n \r\n Veuillez valider votre email en cliquant sur ce lien: http://localhost/TPI/index.php?uc=user&action=modifyEmail&token=$token \r\n \r\n Bonne continuation !\r\n \r\n L'administration";
+                    $message = "Bonjour, \r\n \r\n Vous avez fait une demande de changement d'email. \r\n \r\n Veuillez valider votre email en cliquant sur ce lien: http://localhost/TPI/index.php?uc=user&action=modifyEmail&token=$token \r\n \r\n Bonne continuation !\r\n \r\n L'administration";
                     mail(Session::getUser()->getEmail(), "Changement d'email", $message);
                     User::askModifyEmail(Session::getUser()->getEmail(), $token);
                     FlashMessage::AddMessage(FlashMessage::FLASH_RANKING_INFO, "Un mail vous à été envoyé pour vérifier votre email.");
@@ -32,7 +32,8 @@ if (filter_input(INPUT_POST, 'updateProfil')) {
                     if (!empty($newpassword)) {
                         if (User::checkUserIdentification(Session::getUser()->getEmail(), $password)) {
                             if ($newpassword == $confirm) {
-                                User::updateProfilWithPassword($name, $firstname, $address, $newpassword, Session::getUser()->getIdUser());
+                                User::updateProfilWithPassword($name, $firstname, $address, implode(',', Session::getUser()->getStatus()), $newpassword, Session::getUser()->getIdUser());
+                                FlashMessage::AddMessage(FlashMessage::FLASH_RANKING_SUCCESS, 'Le profil ainsi que le mot de passe ont été mis a jour.');
                             } else {
                                 FlashMessage::AddMessage(FlashMessage::FLASH_RANKING_DANGER, "Les mots de passes ne sont pas identiques.");
                             }
@@ -45,10 +46,10 @@ if (filter_input(INPUT_POST, 'updateProfil')) {
                 }
                 if (empty($password) && (!empty($newpassword) || !empty($confirm))) {
                     FlashMessage::AddMessage(FlashMessage::FLASH_RANKING_DANGER, "Pour modifier le mot de passe entrez le mot de passe actuel ainsi que deux fois le nouveau");
-                } 
-                
+                }
+
                 if (empty($password) && empty($newpassword) && empty($confirm)) {
-                    User::updateProfil($name, $firstname, $address, Session::getUser()->getIdUser());
+                    User::updateProfil($name, $firstname, $address, implode(',', Session::getUser()->getStatus()), Session::getUser()->getIdUser());
                     FlashMessage::AddMessage(FlashMessage::FLASH_RANKING_SUCCESS, "Votre profil à été modifié.");
                 }
 

@@ -1,6 +1,6 @@
 <?php
 // Projet: Application TPI
-// Script: Vue 404.php
+// Script: Views 404.php
 // Description: Page indiquant que le chemin demandé n'a pas été trouvé.
 // Très volubile en développement, 
 // et beaucoup moins en recettage ou en production 

@@ -1,6 +1,6 @@
 <?php
 // Projet: Application TPI 
-// Script: Controlleur addCategory.php
+// Script: Controller addCategory.php
 // Description: script réalisant l'enregistrement d'une catégorie
 // Auteur: Morrone Flavio
 // Version 0.1.1 MF 12.05.2021

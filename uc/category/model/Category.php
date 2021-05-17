@@ -265,7 +265,7 @@ class Category
      * @param string la description
      * @param int l'id du parent
      */
-    public static function updateCategory(int $id,string $title,string $description,int $idParent): void
+    public static function updateCategory(int $id, string $title, string $description, int $idParent): void
     {
         $sql = "UPDATE `ecommerce`.`categories` SET `title` = :title, `description` = :description, `idParentCategory` = :idParent WHERE (`idCategory` = :id);";
         $req = DbConnection::getInstance()->prepare($sql);
@@ -287,13 +287,36 @@ class Category
         $result = "<select name='idParent' class='form-select'>";
         $result .= "<option value='' > Aucun </option>";
         $categories = self::getAllCategories();
+        $category = Category::findById($id);
+
         foreach ($categories as $c) {
-            if ($c->getIdCategory() != $id) {
-                $result .= "<option value='" . $c->getIdCategory() . "' " . ($idParent == $c->getIdCategory() ? "selected" : "") . " >" . $c->getTitle() . "</option>";
+            if ($id != $c->getIdCategory()) {
+                if (!self::hasCategoryChild($id, $c->getIdCategory())) {
+                    $result .= "<option value='" . $c->getIdCategory() . "' " . ($idParent == $c->getIdCategory() ? "selected" : "") . " >" . $c->getTitle() . "</option>";
+                }
             }
         }
         $result .= '</select>';
 
         return $result;
+    }
+
+    /**
+     * Vérifier si une catégorie possède une autre catégorie comme enfant
+     * @param int l'id du parent
+     * @param int l'id de l'enfant
+     * @return bool 
+     */
+    public static function hasCategoryChild(int $idParent,int $idChild)
+    {
+        $child = self::findById($idChild);
+        if ($child->getIdParent() != null) {
+            if ($child->getIdParent() == $idParent) {
+                return true;
+            } else {
+                return self::hasCategoryChild($idParent, $child->getIdParent());
+            }
+        }
+        return false;
     }
 }

@@ -1,6 +1,6 @@
 <?php
 // Projet: Application TPI
-// Script: Vue flashmessages.php
+// Script: Views flashmessages.php
 // Description: affiche les messages flash disponibles
 // Auteur: Pascal Comminot
 // Version 1.0.0 PC 02.10.2020 / Codage initial

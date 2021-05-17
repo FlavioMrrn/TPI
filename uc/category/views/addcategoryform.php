@@ -1,6 +1,6 @@
 <?php
 // Projet: Application TPI 
-// Script: Vue addcategoryform.php
+// Script: Views addcategoryform.php
 // Description: Formulaire d'enregistrement des categories par un admin
 // Auteur: Morrone Flavio
 // Version 0.1.1 MF 12.05.2021

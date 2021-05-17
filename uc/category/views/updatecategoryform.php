@@ -1,6 +1,6 @@
 <?php
 // Projet: Application TPI 
-// Script: Vue updatecategoryform.php
+// Script: Views updatecategoryform.php
 // Description: Formulaire de modification des catégories par un admin
 // Auteur: Morrone Flavio
 // Version 0.1.1 MF 12.05.2021

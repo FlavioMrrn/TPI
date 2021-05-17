@@ -1,6 +1,6 @@
 <?php
 // Projet: Application TPI 
-// Script: Controlleur showCategory.php
+// Script: Controller showCategory.php
 // Description: script réalisant l'affichage de toutes les catégories
 // Auteur: Morrone Flavio
 // Version 0.1.1 MF 12.05.2021

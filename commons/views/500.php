@@ -1,6 +1,6 @@
 <?php
 // Projet: Application TPI
-// Script: Vue 500.php
+// Script: Views 500.php
 // Description: Page d'erreur du serveur, très volubile en développement, 
 // et beaucoup moins en recettage ou en production 
 // Auteur: Pascal Comminot

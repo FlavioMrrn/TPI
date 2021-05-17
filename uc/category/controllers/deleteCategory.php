@@ -1,6 +1,6 @@
 <?php
 // Projet: Application TPI 
-// Script: Controlleur deleteCategory.php
+// Script: Controller deleteCategory.php
 // Description: script réalisant la suppression d'une catégorie
 // Auteur: Morrone Flavio
 // Version 0.1.1 MF 12.05.2021

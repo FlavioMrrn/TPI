@@ -1,6 +1,6 @@
 <?php
 // Projet: Application TPI / User
-// Script: Controlleur updateCategory.php
+// Script: Controller updateCategory.php
 // Description: permet la modification d'une catégorie
 // Auteur: Morrone Flavio
 // Version 0.1.1 MF 12.05.2021 / Codage initial
@@ -20,11 +20,20 @@ if (filter_has_var(INPUT_POST, 'updateCat')) {
             if ($idParent == "") {
                 $idParent = null;
             }
-            if (Category::findById($idParent) !== null || $idParent == null) {
-                Category::updateCategory($id, $title, $description, $idParent);
-                FlashMessage::AddMessage(FlashMessage::FLASH_RANKING_SUCCESS, "La catégories a été supprimé.");
-                header("Location: " . Routes::PathTo('category', 'showCategory'));
-                exit;
+            $parent = Category::findById($idParent);
+            if ($parent !== null || $idParent == null) {
+                if ($id != $parent->getIdCategory()) {
+                    if (!Category::hasCategoryChild($id, $parent->getIdCategory())) {
+                        Category::updateCategory($id, $title, $description, $idParent);
+                        FlashMessage::AddMessage(FlashMessage::FLASH_RANKING_SUCCESS, "La catégorie a été modifié.");
+                        header("Location: " . Routes::PathTo('category', 'showCategory'));
+                        exit;
+                    } else {
+                        FlashMessage::AddMessage(FlashMessage::FLASH_RANKING_DANGER, 'Vous ne pouvez pas mettre comme parent une catégorie enfant de celle-ci');
+                    }
+                } else {
+                    FlashMessage::AddMessage(FlashMessage::FLASH_RANKING_DANGER, 'Vous ne pouvze pas mettre elle même comme catégorie');
+                }
             } else {
                 FlashMessage::AddMessage(FlashMessage::FLASH_RANKING_DANGER, "Le parent d'existe pas.");
             }

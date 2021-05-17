@@ -1,6 +1,6 @@
 <?php
 // Projet: Application TPI
-// Page: Vue footer.php
+// Page: Views footer.php
 // Description: Pied de page HTML pour les pages de l'application
 // Auteur: Pascal Commminot
 // Version 1.0.0 PC 02.10.2020 / Codage initial

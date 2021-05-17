@@ -1,6 +1,6 @@
 <?php
 // Projet: Application TPI
-// Script: Controlleur editUser.php
+// Script: Controller editUser.php
 // Description: permet la modification d'un utilisateur
 // Auteur: Morrone Flavio 
 // Version 0.1.1 MF 11.05.2021 

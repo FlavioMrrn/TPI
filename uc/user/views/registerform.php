@@ -1,6 +1,6 @@
 <?php
 // Projet: Application TPI 
-// Script: Vue registerform.php
+// Script: Views registerform.php
 // Description: Formulaire d'enregistrement des utilisateurs
 // Auteur: Morrone Flavio
 // Version 0.1.1 MF 03.05.2021

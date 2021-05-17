@@ -1,6 +1,6 @@
 <?php
 // Projet: Application TPI
-// Script: Vue menu.php
+// Script: Views menu.php
 // Description: menu dynamique du site
 // Auteur: Pascal Comminot
 // Version 1.0.0 PC 02.10.2021 / Codage initial

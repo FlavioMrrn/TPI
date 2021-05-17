@@ -1,6 +1,6 @@
 <?php
 // Projet: Application TPI 
-// Script: Controlleur register.php
+// Script: Controller register.php
 // Description: script réalisant l'enregistrement d'un user
 // Auteur: Morrone Flavio
 // Version 0.1.1 MF 03.05.2021

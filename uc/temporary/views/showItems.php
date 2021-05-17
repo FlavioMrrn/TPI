@@ -1,6 +1,6 @@
 <?php
 // Projet: Application TPI
-// Script: Vue showItems.php
+// Script: Views showItems.php
 // Description: Page affichant tous les articles du catalogue permettant de sélectionner des articles
 //    afin de simuler la livraison de la part des fournisseurs.
 // Auteur: Pascal Comminot

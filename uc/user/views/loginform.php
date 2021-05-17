@@ -1,6 +1,6 @@
 <?php
 // Projet: Application TPI 
-// Script: Vue loginform.php
+// Script: Views loginform.php
 // Description: Formulaire d'identification des utilisateurs
 // Auteur: Pascal Comminot
 // Version 1.0.0 PC 02.10.2020 / Codage initial

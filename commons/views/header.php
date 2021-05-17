@@ -1,6 +1,6 @@
 <?php
 // Projet: Applicaition TPI
-// Script: Vue header.php
+// Script: Views header.php
 // Description: entête HTML des pages du site 
 // Auteur: Pascal Comminot
 // Version 1.0.0 PC 02.10.2020 / Codage initial

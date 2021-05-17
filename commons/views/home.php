@@ -1,6 +1,6 @@
 <?php
 // Projet: Application TPI
-// Script: Vue home.php
+// Script: Views home.php
 // Description: Page d'accueil du site
 // Auteur: Pascal Comminot
 // Version 1.0.0 PC 02.10.2020 / Codage initial

@@ -1,6 +1,6 @@
 <?php
 // Projet: Application TPI
-// Script: Controlleur recoverPassword.php
+// Script: Controller recoverPassword.php
 // Description: permet la récupération de mot de passe d'un utilisateur
 // Auteur: Morrone Flavio 
 // Version 0.1.1 MF 05.05.2021 
