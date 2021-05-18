@@ -18,25 +18,30 @@ if (filter_input(INPUT_POST, "verify")) {
         $user = User::findByEmail($email);
         if ($user !== false) {
             if (User::verifyValidationTokenEmail($token, $email)) {
-            $now = new DateTime("NOW");
-            $date = $user->getValidationDate();
-            $format = 'Y-m-d H:i:s';
-            $validation = DateTime::createFromFormat($format, $date);
-            //vérification de la date limite de validation
-            if ($now < $validation) {
-                FlashMessage::AddMessage(FlashMessage::FLASH_RANKING_SUCCESS, "Félicitation, votre compte à été validé !");
-                User::validateAccount($email);
-                Session::setUser(User::findById(Session::getUser()->getIdUser()));
-                header("Location: " . Routes::PathTo("main", "home"));
-                exit();
+                $now = new DateTime("NOW");
+                $date = $user->getValidationDate();
+                if ($date == null) {
+                    $date = User::getValidationDateByEmail($email);
+                }
+                $format = 'Y-m-d H:i:s';
+                $validation = DateTime::createFromFormat($format, $date);
+
+                //vérification de la date limite de validation
+                if ($now < $validation) {
+                    FlashMessage::AddMessage(FlashMessage::FLASH_RANKING_SUCCESS, "Félicitation, votre compte à été validé !");
+                    User::validateAccount($email);
+                    if (Session::getUser()->getIdUser()) {
+                        Session::setUser(User::findById(Session::getUser()->getIdUser()));
+                    }
+                    header("Location: " . Routes::PathTo("main", "home"));
+                    exit();
+                } else {
+                    FlashMessage::AddMessage(FlashMessage::FLASH_RANKING_DANGER, "Votre date limite de validation à expiré !");
+                }
             } else {
-                FlashMessage::AddMessage(FlashMessage::FLASH_RANKING_DANGER, "Votre date limite de validation à expiré !");
+                FlashMessage::AddMessage(FlashMessage::FLASH_RANKING_DANGER, "Le token et l'email ne correspondent pas !");
             }
-        } else {
-            FlashMessage::AddMessage(FlashMessage::FLASH_RANKING_DANGER, "Le token et l'email ne correspondent pas !");
         }
-        }
-        
     }
 }
 

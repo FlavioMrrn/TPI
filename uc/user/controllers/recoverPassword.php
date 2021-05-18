@@ -14,7 +14,7 @@ if (filter_input(INPUT_POST, "askRecover")) {
     if (User::findByEmail($email) != false) {
         $token = User::generateToken();
         User::askRecover($email, $token);
-        $message = "Bonjour, \r\n Merci pour votre inscription à notre site. \r\n  Veuillez valider votre email en cliquant sur ce lien: http://localhost/TPI/index.php?uc=user&action=recoverPassword&token=$token \r\n Bonne continuation ! \r\n L'administration";
+        $message = "Bonjour, \r\nVous avez demandé de récupérer votre mot de passe. \r\nVeuillez cliquer sur ce lien afin de le changer: http://localhost/TPI/index.php?uc=user&action=recoverPassword&token=$token \r\nBonne continuation ! \r\nL'administration";
         mail($email, "Récupération du mot de passe", $message);
     }
     Log::addLog("Une demande de récupération de mot de passe à été effectué sur l'email $email");
@@ -33,6 +33,9 @@ if (filter_input(INPUT_POST, "askRecover")) {
                 $format = 'Y-m-d H:i:s';
                 $now = new DateTime("NOW");
                 $date = $user->getRecoveryDate();
+                if ($date == null) {
+                    $date = User::getRecoveryDateByEmail($email);
+                }
                 $validation = DateTime::createFromFormat($format, $date);
                 //vérification de la date limite de validation
                 if ($now < $validation) {

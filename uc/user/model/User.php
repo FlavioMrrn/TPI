@@ -741,6 +741,34 @@ class User
         $req->bindParam(':newemail', $newemail);
         $req->execute();
     }
+    /**
+     * Récupère la date limite de récupération de mot de passe
+     * @param string l'email du compte 
+     * @return string la date limite de validation 
+     */
+    public static function getRecoveryDateByEmail(string $email): ?string
+    {
+        $sql = "SELECT pwdRecoveryDate FROM users WHERE email = :email";
+        $req = DbConnection::getInstance()->prepare($sql);
+        $req->bindParam(":email", $email);
+        $req->execute();
+        return $req->fetch()[0];
+    }
+
+    /**
+     * Récupère la date limite de validation du compte
+     * @param string l'email du compte 
+     * @return string la date limite de validation 
+     */
+    public static function getValidationDateByEmail(string $email): ?string
+    {
+        $sql = "SELECT validationDate FROM users WHERE email = :email";
+        $req = DbConnection::getInstance()->prepare($sql);
+        $req->bindParam(":email", $email);
+        $req->execute();
+        $r = $req->fetch()[0];
+        return $r;
+    }
 
     /**
      * SearchUser effectue une recherche sur la table dico

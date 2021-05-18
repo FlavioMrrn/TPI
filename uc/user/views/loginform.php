@@ -38,7 +38,7 @@
     </div>
     <div class="form-group">
         <div class="control-label col-sm-3">
-            <p> <a href="<?= Routes::PathTo('user', 'registration') ?>">Pas encore inscrit ?</a></p>
+            <p> <a href="<?= Routes::PathTo('user', 'register') ?>">Pas encore inscrit ?</a></p>
            <a href="<?= Routes::PathTo('user', 'recoverPassword') ?>">Mot de passe oublié ?</a>
         </div>
     </div>
