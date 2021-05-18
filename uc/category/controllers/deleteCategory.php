@@ -9,8 +9,13 @@ if (filter_has_var(INPUT_POST, 'deleteCategory')) {
     $id = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
     if (Category::findById($id) != null) {
         if (!Category::hasChild($id)) {
-            FlashMessage::AddMessage(FlashMessage::FLASH_RANKING_SUCCESS, "La catégorie à bien été supprimé.");
-            Category::deleteCategory($id);
+            $count = Category::CountItems($id);
+            if ($count[0] <= 0) {
+                Category::deleteNotPublishedItems($id);
+                FlashMessage::AddMessage(FlashMessage::FLASH_RANKING_SUCCESS, "La catégorie à bien été supprimé.");
+                Category::deleteCategory($id);
+            }
+            
         } else {
             FlashMessage::AddMessage(FlashMessage::FLASH_RANKING_DANGER, "Il est impossible de supprimer cette catégorie.");
         }

@@ -23,8 +23,12 @@ if (filter_has_var(INPUT_POST, "submit")) {
     if ($user == null) {
         FlashMessage::AddMessage(FlashMessage::FLASH_RANKING_DANGER, "Identification ou mot de passe invalide");
         $currentTryNumber = Session::Get('currentTryNumber');
-        if ($currentTryNumber >= 3) {
-            Log::addLog("La connexion a echoué $currentTryNumber fois de suite sur le même poste avec l'email $email.");
+
+        $previousEmail = Session::Get('previousEmailTry');
+        if ($email != $previousEmail) {
+            $currentTryNumber = 0;
+        } else if ($currentTryNumber >= 2) {
+            Log::addLog("La connexion a echoué " . ($currentTryNumber + 1) . " fois de suite sur le même poste avec l'email $email.");
         }
         Session::addTry($email, $currentTryNumber);
     } else {

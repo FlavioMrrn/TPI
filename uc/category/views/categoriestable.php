@@ -37,34 +37,37 @@
                     <!-- Modal pour delete-->
                     <?php
 
-                    if (!Category::hasChild($c->getIdCategory())) : ?>
-                        <button data-toggle="modal" class="btn btn-danger" href="#delete<?= $c->getIdCategory() ?>"><span class="fas fa-trash-alt"></span></button>
-                        <div class="modal" id="delete<?= $c->getIdCategory() ?>" tabindex="-1">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h4 class="modal-title">Voulez-vous vraiment supprimer cette catégorie ?</h4>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <?= $c->getTitle(); ?>,
-                                        <?= $c->getDescription(); ?>
-                                        </p>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <form action="<?= Routes::PathTo('category', 'deleteCategory') ?>" method="post">
-                                            <input type="hidden" name="id" value="<?= $c->getIdCategory() ?>" />
-                                            <input class="btn" type="submit" name="deleteCategory" value="Supprimer" />
-                                        </form>
+                    if (!Category::hasChild($c->getIdCategory())) :
+                        $count = Category::CountItems($c->getIdCategory());
+                        if ($count[0] <= 0) : ?>
+                            <button data-toggle="modal" class="btn btn-danger" href="#delete<?= $c->getIdCategory() ?>"><span class="fas fa-trash-alt"></span></button>
+                            <div class="modal" id="delete<?= $c->getIdCategory() ?>" tabindex="-1">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h4 class="modal-title">Voulez-vous vraiment supprimer cette catégorie ?</h4>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <?= $c->getTitle(); ?>,
+                                            <?= $c->getDescription(); ?>
+                                            </p>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <form action="<?= Routes::PathTo('category', 'deleteCategory') ?>" method="post">
+                                                <input type="hidden" name="id" value="<?= $c->getIdCategory() ?>" />
+                                                <input class="btn" type="submit" name="deleteCategory" value="Supprimer" />
+                                            </form>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
                         <?php
+                        endif;
                     endif; ?>
 
-                        </div>
+                            </div>
                 </td>
             <?php endif; ?>
         </tr>

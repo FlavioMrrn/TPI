@@ -134,7 +134,7 @@ class Category
      * @param int $id
      * @return ?Category retourne la catégorie trouvé ou null
      */
-    public static function findById(int $id): ?Category
+    public static function findById(?int $id): ?Category
     {
         $sql = 'SELECT * FROM categories WHERE idCategory = :id';
         $req = DbConnection::getInstance()->prepare($sql);
@@ -265,7 +265,7 @@ class Category
      * @param string la description
      * @param int l'id du parent
      */
-    public static function updateCategory(int $id, string $title, string $description, int $idParent): void
+    public static function updateCategory(int $id, string $title, string $description, ?int $idParent): void
     {
         $sql = "UPDATE `ecommerce`.`categories` SET `title` = :title, `description` = :description, `idParentCategory` = :idParent WHERE (`idCategory` = :id);";
         $req = DbConnection::getInstance()->prepare($sql);
@@ -307,7 +307,7 @@ class Category
      * @param int l'id de l'enfant
      * @return bool 
      */
-    public static function hasCategoryChild(int $idParent,int $idChild)
+    public static function hasCategoryChild(int $idParent, int $idChild)
     {
         $child = self::findById($idChild);
         if ($child->getIdParent() != null) {
@@ -318,5 +318,31 @@ class Category
             }
         }
         return false;
+    }
+
+    public static function CountItems(int $id)
+    {
+        $sql = 'SELECT COUNT(*) FROM ecommerce.items where idCategory = :id AND published = 1;';
+        $req = DbConnection::getInstance()->prepare($sql);
+        $req->bindParam(':id', $id);
+        $req->execute();
+        return $req->fetch();
+    }
+
+    public static function deleteNotPublishedItems($id)
+    {
+        $sql = 'SELECT * FROM ecommerce.items where idCategory = :id AND published = 0;';
+        $req = DbConnection::getInstance()->prepare($sql);
+        $req->setFetchMode(PDO::FETCH_ASSOC);
+        $req->bindParam(':id', $id);
+        $req->execute();
+        $r = $req->fetchAll();
+
+        foreach ($r as $i) {
+            $sql = "DELETE FROM `ecommerce`.`items` WHERE (`idItem` = :id);";
+            $req = DbConnection::getInstance()->prepare($sql);
+            $req->bindParam(':id', $i['idItem']);
+            $req->execute();
+        }
     }
 }

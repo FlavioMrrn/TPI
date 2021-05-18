@@ -758,6 +758,7 @@ class User
                  WHERE firstName LIKE :word
                  OR lastName LIKE :word
                  OR email LIKE :word
+                 OR status LIKE :word
                  LIMIT :offset, :limit';
         $req = DbConnection::getInstance()->prepare($sql);
         $req->setFetchMode(PDO::FETCH_CLASS, 'User');

@@ -21,7 +21,7 @@ if (filter_has_var(INPUT_POST, 'updateCat')) {
                 $idParent = null;
             }
             $parent = Category::findById($idParent);
-            if ($parent !== null || $idParent == null) {
+            if ($parent != null) {
                 if ($id != $parent->getIdCategory()) {
                     if (!Category::hasCategoryChild($id, $parent->getIdCategory())) {
                         Category::updateCategory($id, $title, $description, $idParent);
@@ -34,6 +34,11 @@ if (filter_has_var(INPUT_POST, 'updateCat')) {
                 } else {
                     FlashMessage::AddMessage(FlashMessage::FLASH_RANKING_DANGER, 'Vous ne pouvze pas mettre elle même comme catégorie');
                 }
+            } else if ($idParent == null){
+                Category::updateCategory($id, $title, $description, null);
+                FlashMessage::AddMessage(FlashMessage::FLASH_RANKING_SUCCESS, "La catégorie a été modifié.");
+                header("Location: " . Routes::PathTo('category', 'showCategory'));
+                exit;
             } else {
                 FlashMessage::AddMessage(FlashMessage::FLASH_RANKING_DANGER, "Le parent d'existe pas.");
             }
