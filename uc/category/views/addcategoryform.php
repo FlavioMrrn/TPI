@@ -32,7 +32,7 @@
             (* champs obligatoires)
         </div>
         <div class="col-sm-9">
-            <input type="submit" name="addCategory" value="S'enregistrer" />
+            <input type="submit" name="addCategory" value="Ajouter" />
         </div>
     </div>
 </form>

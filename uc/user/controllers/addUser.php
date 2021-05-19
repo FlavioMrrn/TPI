@@ -26,7 +26,7 @@ if (filter_has_var(INPUT_POST, "addUser")) {
                     $status = 'Customer';
                     User::register($name, $firstname, $email, $password, $address, $status, null, null);
                     $message = "Bonjour, \r\n \r\n Votre compte à été créé par un administrateur. \r\n \r\n Vous pouvez dès à présent vous connecter avec cet email.\r\n \r\n Si vous ne connaissez pas le mot de passe faite une demande de réinitialisation. \r\n \r\n L'administration";
-                    mail($email, "Validation de votre compte", $message);
+                    mail($email, "Création de votre compte", $message);
                     FlashMessage::AddMessage(FlashMessage::FLASH_RANKING_SUCCESS, "L'utilisateur à été enregistré avec succès.");
                 } catch (\Throwable $th) {
                     FlashMessage::AddMessage(FlashMessage::FLASH_RANKING_DANGER, "Une erreure est survenue lors de la création de l'utilisateur, veuillez reessayer plus tard.");

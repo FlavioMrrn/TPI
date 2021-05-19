@@ -307,7 +307,7 @@ class Category
      * @param int l'id de l'enfant
      * @return bool 
      */
-    public static function hasCategoryChild(int $idParent, int $idChild)
+    public static function hasCategoryChild(?int $idParent, ?int $idChild)
     {
         $child = self::findById($idChild);
         if ($child->getIdParent() != null) {

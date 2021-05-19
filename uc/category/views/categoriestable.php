@@ -8,10 +8,9 @@
 ?>
 <table class="table table-bordered table-striped table-condensed">
     <tr>
-        <th>id</th>
         <th>Titre</th>
         <th>Description</th>
-        <th>IdParent</th>
+        <th>Parent</th>
     </tr>
 
     <?php
@@ -21,10 +20,14 @@
         // Le ProductManager ou le SaleManager peuvent éditer/supprimer leur propres définitions
     ?>
         <tr>
-            <td><?= $c->getIdCategory() ?></td>
             <td><?= $c->getTitle() ?></td>
             <td><?= $c->getDescription() ?></td>
-            <td><?= $c->getIdParent() ?></td>
+            <td><?php
+                if ($c->getIdParent() != null) {
+                    $category = Category::findById($c->getIdParent());
+                    echo $category->getTitle();
+                }
+                ?></td>
             <?php
             if (Session::getUser()->hasCurrentRole(User::USER_ROLE_WEB_MANAGER)) : ?>
                 <td>

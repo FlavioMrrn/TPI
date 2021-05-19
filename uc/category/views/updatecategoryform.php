@@ -34,7 +34,7 @@
             (* champs obligatoires)
         </div>
         <div class="col-sm-9">
-            <input type="submit" name="updateCat" value="S'enregistrer" />
+            <input type="submit" name="updateCat" value="Modifier" />
         </div>
     </div>
 </form>

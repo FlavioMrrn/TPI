@@ -61,7 +61,7 @@
             (* champs obligatoires)
         </div>
         <div class="col-sm-9">
-            <input type="submit" name="addUser" value="S'enregistrer" />
+            <input type="submit" name="addUser" value="Ajouter" />
         </div>
     </div>
 </form>
