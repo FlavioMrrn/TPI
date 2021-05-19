@@ -36,15 +36,7 @@ if (filter_has_var(INPUT_POST, "register")) {
                         FlashMessage::AddMessage(FlashMessage::FLASH_RANKING_SUCCESS, "Votre compte à bien été crée. Vous êtes WebManager sur le site !");
                     } else {
                         User::register($name, $firstname, $email, $password, $address, $status, date_format($validationDate, 'Y-m-d H:i:s'), $token);
-                        $message = "Bonjour,
-    
-     Merci pour votre inscription à notre site.
-    
-     Veuillez valider votre email en cliquant sur ce lien: http://localhost/TPI/index.php?uc=user&action=verify&token=$token
-    
-     Bonne continuation !
-    
-     L'administration";
+                        $message = "Bonjour,\r\nMerci pour votre inscription à notre site.\r\nVeuillez valider votre email en cliquant sur ce lien: http://localhost/TPI/index.php?uc=user&action=verify&token=$token \r\nBonne continuation !\r\nL'administration";
 
                         mail($email, "Validation de votre compte", $message);
                         FlashMessage::AddMessage(FlashMessage::FLASH_RANKING_SUCCESS, "L'utilisateur à été enregistré avec succès. Un mail va vous être envoyé pour valider votre email.");

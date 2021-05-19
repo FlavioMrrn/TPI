@@ -17,7 +17,7 @@ if (filter_input(INPUT_POST, 'modifyEmail')) {
         if (!($email == $newemail)) {
             if (User::verifyValidationTokenEmail($token, $email)) {
                 User::updateEmail($email, $newemail);
-                $message = "Bonjour, \r\n \r\n Votre email à correctement été modifié. \r\n \r\n Vous devez-donc maintenant vous connecter avec cet email.\r\n \r\n Bonne continuation ! \r\n \r\n L'administration";
+                $message = "Bonjour,\r\n\r\n Votre email à correctement été modifié.\r\n\r\n Vous devez-donc maintenant vous connecter avec cet email.\r\n\r\nBonne continuation !\r\n\r\n L'administration";
                 mail($newemail, "Changement d'email", $message);
                 FlashMessage::AddMessage(FlashMessage::FLASH_RANKING_SUCCESS, "Votre email à bien été changé.");
                 Session::setUser(User::findById(Session::getUser()->getIdUser()));

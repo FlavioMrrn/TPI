@@ -23,7 +23,7 @@ if (filter_input(INPUT_POST, 'updateProfil')) {
                 if ($email != Session::getUser()->getEmail()) {
                     $token = User::generateToken();
                     //envoyer un mail
-                    $message = "Bonjour, \r\n \r\n Vous avez fait une demande de changement d'email. \r\n \r\n Veuillez valider votre email en cliquant sur ce lien: http://localhost/TPI/index.php?uc=user&action=modifyEmail&token=$token \r\n \r\n Bonne continuation !\r\n \r\n L'administration";
+                    $message = "Bonjour,\r\n\r\nVous avez fait une demande de changement d'email.\r\n\r\nVeuillez valider votre email en cliquant sur ce lien: http://localhost/TPI/index.php?uc=user&action=modifyEmail&token=$token\r\n\r\n Bonne continuation !\r\n\r\nL'administration";
                     mail(Session::getUser()->getEmail(), "Changement d'email", $message);
                     User::askModifyEmail(Session::getUser()->getEmail(), $token);
                     FlashMessage::AddMessage(FlashMessage::FLASH_RANKING_INFO, "Un mail vous à été envoyé pour vérifier votre email.");
