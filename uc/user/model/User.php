@@ -76,22 +76,43 @@ class User
      */
     private $validateDate;
 
+    /**
+     * getValidationDate retourne la date maximal de validation du compte
+     * 
+     * @return string la date
+     */
     public function getValidationDate()
     {
         return $this->validateDate;
     }
 
+    /** 
+     * Met à jour la date de validation de l'utilisateur
+     * 
+     * @param string la date
+     * @return self
+     */
     public function setValidationDate($date): self
     {
         $this->validateDate = $date;
         return $this;
     }
 
+    /**
+     * getRecoveryDate retourne la date max pour la récipération de mot de passe
+     * 
+     * @return string la date
+     */
     public function getRecoveryDate()
     {
         return $this->pwdRecoveryDate;
     }
 
+    /**
+     * Met a jour la date de récupération de mot de passe
+     * 
+     * @return self
+     */
     public function setRecoveryDate($date)
     {
         $this->pwdRecoveryDate = $date;

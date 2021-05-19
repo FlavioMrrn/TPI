@@ -35,15 +35,20 @@ if (filter_has_var(INPUT_POST, 'update')) {
     $verifyStatus = explode(',', $status);
     foreach ($verifyStatus as $s) {
         if (
-            trim($s) != User::USER_ROLE_UNDEFINED && trim($s) != User::USER_ROLE_NOT_VERIFIED && trim($s) != User::USER_ROLE_CUSTOMER && trim($s) != User::USER_ROLE_SALE_MANAGER &&
-            trim($s) != User::USER_ROLE_PRODUCT_MANAGER && trim($s) != User::USER_ROLE_WEB_MANAGER && trim($s) != User::USER_ROLE_BANNED
+            trim($s) != User::USER_ROLE_UNDEFINED 
+            && trim($s) != User::USER_ROLE_NOT_VERIFIED 
+            && trim($s) != User::USER_ROLE_CUSTOMER 
+            && trim($s) != User::USER_ROLE_SALE_MANAGER 
+            && trim($s) != User::USER_ROLE_PRODUCT_MANAGER
+            && trim($s) != User::USER_ROLE_WEB_MANAGER 
+            && trim($s) != User::USER_ROLE_BANNED
         ) {
             header("Location: " . Routes::PathTo('user', 'showUsers'));
             FlashMessage::AddMessage(FlashMessage::FLASH_RANKING_DANGER, 'Le status n\'est pas correct.');
             exit;
         }
 
-        if (trim($s) == User::USER_ROLE_BANNED && $email == Session::getUser()->getEmail()) {
+        if (trim($s) == User::USER_ROLE_BANNED && $user->getEmail() == Session::getUser()->getEmail()) {
             header("Location: " . Routes::PathTo('user', 'showUsers'));
             FlashMessage::AddMessage(FlashMessage::FLASH_RANKING_DANGER, 'Vous ne pouvez pas vous bannir.');
             exit;
@@ -59,13 +64,13 @@ if (filter_has_var(INPUT_POST, 'update')) {
         }
         if ($user->getEmail() !== $email) {
             User::updateEmail($user->getEmail(), $email);
-            $message = "Bonjour, \r\n Votre comte à été modifié par un admin. \r\n  Votre nouvel email pour vous connecter est $email. \r\n Bonne continuation ! \r\n L'administration";
+            $message = "Bonjour, \r\nVotre comte à été modifié par un admin.\r\nVotre nouvel email pour vous connecter est $email.\r\nBonne continuation !\r\nL'administration";
             mail($user->getEmail(), "Changement d'email", $message);
-            $message = "Bonjour, \r\n Votre comte à été modifié par un admin. \r\n  Voici le nouvel email de votre compte. \r\n Bonne continuation ! \r\n L'administration";
+            $message = "Bonjour, \r\nVotre comte à été modifié par un admin.\r\nVoici le nouvel email de votre compte.\r\nBonne continuation !\r\nL'administration";
             mail($email, "Changement d'email", $message);
             Session::setUser(User::findById(Session::getUser()->getIdUser()));
         } else {
-            $message = "Bonjour, \r\n Votre comte à été modifié par un admin. \r\n  \r\n Bonne continuation ! \r\n L'administration";
+            $message = "Bonjour,\r\nVotre comte à été modifié par un admin.\r\n\r\nBonne continuation !\r\nL'administration";
             mail($email, "Récupération du mot de passe", $message);
         }
 
