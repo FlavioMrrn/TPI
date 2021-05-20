@@ -6,7 +6,7 @@
 //      Modifié par: Morrone Flavio
 // Version 1.0.0 PC 02.10.2017 / Codage initial
 // Version 1.0.1 PC 06.05.2021 / Ajout de la vérification du nombre d'essais
-
+// Version 1.0.2 MF / Ajout de la gestion des logs
 
 require_once 'commons/views/Html.php';
 

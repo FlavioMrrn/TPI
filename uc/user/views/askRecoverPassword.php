@@ -1,6 +1,6 @@
 <?php
 // Projet: Application TPI / User
-// Script: Routeur recoverPasswordform.php
+// Script: Views recoverPasswordform.php
 // Description: formulaire de vérification d'email
 // Auteur: Morrone Flavio
 // Version 0.1.1 MF 03.05.2021

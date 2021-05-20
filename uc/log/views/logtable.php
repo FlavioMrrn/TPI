@@ -1,6 +1,6 @@
 <?php
 // Projet: Application TPI
-// Script: Views showLogs.php
+// Script: Views logtable.php
 // Description: affiche les logs pour les admins
 // Auteur: Morrone Flavio 
 // Version 0.1.1 MF 06.05.2021 

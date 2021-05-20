@@ -1,7 +1,7 @@
 <?php
 // Projet: Application TPI 
-// Script: Views adduserform.php
-// Description: Formulaire d'enregistrement des utilisateurs par un admin
+// Script: Views updateuserform.php
+// Description: Formulaire de modification des utilisateurs par un admin
 // Auteur: Morrone Flavio
 // Version 0.1.1 MF 11.05.2021
 

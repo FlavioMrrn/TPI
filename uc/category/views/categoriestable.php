@@ -1,7 +1,7 @@
 <?php
 // Projet: Application TPI
-// Script: Views usertable.php
-// Description: affiche les users pour les admins
+// Script: Views categoriestable.php
+// Description: affiche les catégories
 // Auteur: Morrone Flavio 
 // Version 0.1.1 MF 06.05.2021 
 
