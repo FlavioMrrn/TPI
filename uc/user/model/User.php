@@ -792,9 +792,8 @@ class User
     }
 
     /**
-     * SearchUser effectue une recherche sur la table dico
-     * Le mot recherché peut se trouver dans le champ nom, pérnom ou email
-     *
+     * Recherche les utilisateurs contenant le mot passé en paramètre
+     * 
      * @param  mixed $word
      * @param int offset    
      * @param int limit    
@@ -819,8 +818,7 @@ class User
     }
 
     /**
-     * SearchCount compte le nombre d'enregistrements qui comporte le mot $word
-     * dans le mot ou la définition
+     * Compte le nombre d'utilisateur que la recherche va sortir
      *
      * @param  mixed $word
      * @return int

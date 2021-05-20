@@ -46,9 +46,9 @@ class Category
     }
 
     /**
-     * get retourne le message
+     * get retourne le titre
      *
-     * @return ?int L'id peut être null, dans le cas de la création d'un nouvel enregistrement.
+     * @return ?string 
      */
     public function getTitle(): ?string
     {
@@ -56,9 +56,9 @@ class Category
     }
 
     /**
-     * get retourne l'id de la log
+     * get retourne la descritpion
      *
-     * @return ?int L'id peut être null, dans le cas de la création d'un nouvel enregistrement.
+     * @return ?string la description peut être null
      */
     public function getDescription(): ?string
     {
@@ -69,7 +69,7 @@ class Category
     /**
      * get retourne l'id de la category parent 
      *
-     * @return ?int L'id peut être null, dans le cas de la création d'un nouvel enregistrement.
+     * @return ?int L'id peut être null
      */
     public function getIdParent(): ?int
     {
@@ -77,8 +77,7 @@ class Category
     }
 
     /**
-     * setIdLog permet de définir l'id de la Log... 
-     * Cette méthode ne devrait jamais être utilisée, dans la mesure où c'est la base de donnée qui définit l'id...
+     * setIdCategory permet de définir l'id de la Category... 
      * L'id peut être null, ce qui permet de créer un nouvel enregistrement lors de la sauvegarde dans la base de données
      *
      * @param  ?int $idLog
@@ -92,7 +91,7 @@ class Category
 
 
     /**
-     * setMessage permet de modifier le message de la Log
+     * setTitle permet de modifier le titre de la Category
      *
      * @param  ?string $message
      * @return self
@@ -104,7 +103,7 @@ class Category
     }
 
     /**
-     * setDate permet de modifier la date de la Log
+     * setDescription permet de modifier la description de la Category
      *
      * @param  ?DateTime $date
      * @return self
@@ -116,11 +115,10 @@ class Category
     }
 
     /**
-     * setIdLog permet de définir l'id de la Log... 
-     * Cette méthode ne devrait jamais être utilisée, dans la mesure où c'est la base de donnée qui définit l'id...
+     * setIdParent permet de définir l'id de son parent 
      * L'id peut être null, ce qui permet de créer un nouvel enregistrement lors de la sauvegarde dans la base de données
      *
-     * @param  ?int $idLog
+     * @param  ?int $idParent
      * @return self
      */
     public function setIdParent(?int $idParentCategory): self
@@ -320,6 +318,11 @@ class Category
         return false;
     }
 
+    /**
+     * Compte le nombre d'item publiés pour une catégorie
+     * @param int l'id de la catégorie
+     * @return int le nombre
+     */
     public static function CountItems(int $id)
     {
         $sql = 'SELECT COUNT(*) FROM ecommerce.items where idCategory = :id AND published = 1;';
@@ -329,6 +332,11 @@ class Category
         return $req->fetch();
     }
 
+    /**
+     * Supprime tous les articles non publié d'une catégories
+     * @param int l'id de la catégorie
+     * @return void
+     */
     public static function deleteNotPublishedItems($id)
     {
         $sql = 'SELECT * FROM ecommerce.items where idCategory = :id AND published = 0;';
